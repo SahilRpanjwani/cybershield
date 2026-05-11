@@ -1,0 +1,27 @@
+{% extends "staff_dashboard/base.html" %}
+
+{% block content %}
+
+<h2>Create Engagement</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Team:</label>
+    {{ form.assigned_team }}
+    <br><br>
+
+    <label>Start Date:</label>
+    {{ form.start_date }}
+    <br><br>
+
+    <label>End Date:</label>
+    {{ form.end_date }}
+    <br><br>
+
+    <button type="submit">Create Engagement</button>
+</form>
+
+<a href="{% url 'request_list' %}">Cancel</a>
+
+{% endblock %}

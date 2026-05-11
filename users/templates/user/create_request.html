@@ -1,0 +1,109 @@
+{% extends 'user/base.html' %}
+
+{% block title %}New Request | CyberShield{% endblock %}
+
+{% block page_title %}Initiate Security Assessment{% endblock %}
+{% block page_description %}Provide the mission parameters for your next penetration test.{% endblock %}
+
+{% block content %}
+
+<div class="max-w-3xl mx-auto">
+    <!-- Main Form Card -->
+    <div class="bg-white rounded-3xl border border-gray-200 shadow-xl overflow-hidden">
+        <!-- Step Indicator Header -->
+        <div class="px-8 py-5 border-b border-gray-100 bg-gradient-to-r from-indigo-50/50 to-purple-50/50">
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 rounded-full bg-indigo-600 ring-4 ring-indigo-100"></div>
+                    <div class="w-2.5 h-2.5 rounded-full bg-gray-300"></div>
+                    <div class="w-2.5 h-2.5 rounded-full bg-gray-300"></div>
+                </div>
+                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Step 1 of 3: Drafting Request</span>
+            </div>
+        </div>
+
+        <!-- Form Body -->
+        <div class="p-8">
+            <form method="post">
+                {% csrf_token %}
+
+                <!-- Company Name -->
+                <div class="mb-6">
+                    <label for="{{ form.company_name.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+                        <i class="fas fa-building text-indigo-400 mr-1.5"></i> Target Organization
+                    </label>
+                    <input type="text" name="{{ form.company_name.name }}" id="{{ form.company_name.id_for_label }}"
+                           value="{{ form.company_name.value|default:'' }}"
+                           placeholder="e.g., Acme Corporation"
+                           class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition">
+                    <p class="text-xs text-gray-500 mt-1.5">Enter the official name of the company or subsidiary to be tested.</p>
+                </div>
+
+                <!-- Assessment Type -->
+                <div class="mb-6">
+                    <label for="{{ form.request_type.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+                        <i class="fas fa-fingerprint text-indigo-400 mr-1.5"></i> Assessment Type
+                    </label>
+                    <select name="{{ form.request_type.name }}" id="{{ form.request_type.id_for_label }}"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%236b7280%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%222%22%20d%3D%22M19%209l-7%207-7-7%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[right_1rem_center] bg-[length:1.2rem]">
+                        {% for value, label in form.fields.request_type.choices %}
+                            <option value="{{ value }}" {% if form.request_type.value == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                    <p class="text-xs text-gray-500 mt-1.5">Select the specialized field for this pentest operation.</p>
+                </div>
+
+                <!-- Website URL -->
+                <div class="mb-6">
+                    <label for="{{ form.website_url.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+                        <i class="fas fa-link text-indigo-400 mr-1.5"></i> Website URL
+                    </label>
+                    <input type="url" name="{{ form.website_url.name }}" id="{{ form.website_url.id_for_label }}"
+                           value="{{ form.website_url.value|default:'' }}"
+                           placeholder="https://example.com"
+                           class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition">
+                    <p class="text-xs text-gray-500 mt-1.5">Provide the official website URL of the target organization.</p>
+                </div>
+
+                <!-- Scope Description -->
+                <div class="mb-6">
+                    <label for="{{ form.scope_description.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+                        <i class="fas fa-crosshairs text-indigo-400 mr-1.5"></i> Mission Scope & Parameters
+                    </label>
+                    <textarea name="{{ form.scope_description.name }}" id="{{ form.scope_description.id_for_label }}" rows="5"
+                              placeholder="Define URLs, IP ranges, or specific modules that are in-scope..."
+                              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition resize-y">{{ form.scope_description.value|default:'' }}</textarea>
+                    <p class="text-xs text-gray-500 mt-1.5">Be as detailed as possible. Clear parameters help our analysts assign the right team.</p>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="flex justify-end gap-3 pt-6 border-t border-gray-100">
+                    <a href="{% url 'users:user_dashboard' %}"
+                       class="px-6 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-xl transition shadow-sm">
+                        Cancel
+                    </a>
+                    <button type="submit"
+                            class="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-md shadow-indigo-200 transition flex items-center gap-2">
+                        <i class="fas fa-paper-plane"></i> Submit Mission Brief
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Pro Tip Box -->
+    <div class="mt-6 flex items-start gap-4 p-5 bg-amber-50 border border-amber-200 rounded-2xl">
+        <div class="w-8 h-8 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
+            <i class="fas fa-lightbulb text-sm"></i>
+        </div>
+        <div>
+            <h4 class="text-sm font-bold text-amber-800 mb-0.5">Pro Tip</h4>
+            <p class="text-sm text-amber-700 leading-relaxed">
+                Detailed scope descriptions reduce back‑and‑forth and help us match you with the perfect pentesting team.
+                Include IP ranges, URLs, and any out‑of‑scope items.
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

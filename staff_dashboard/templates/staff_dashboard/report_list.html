@@ -1,0 +1,95 @@
+{% extends 'staff_dashboard/base.html' %}
+
+{% block title %}Submitted Reports | CyberShield Admin{% endblock %}
+{% block page_title %}Submitted Reports{% endblock %}
+{% block page_description %}Review and manage pentest reports from your team{% endblock %}
+
+{% block content %}
+
+<!-- Filter Bar -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+  <form method="get" class="flex items-center gap-3">
+    <label class="text-sm font-medium text-gray-700">Filter by status:</label>
+    <select name="status" onchange="this.form.submit()"
+            class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500">
+      <option value="">All</option>
+      {% for val, label in status_choices %}
+        <option value="{{ val }}" {% if status_filter == val %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </form>
+  <a href="{% url 'staff_dashboard' %}" class="text-sm font-medium text-indigo-600 hover:text-indigo-700">
+    <i class="fas fa-arrow-left mr-1"></i> Back to Dashboard
+  </a>
+</div>
+
+<!-- Reports Table -->
+<div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+  {% if reports %}
+  <div class="overflow-x-auto">
+    <table class="w-full text-left">
+      <thead>
+        <tr class="bg-gray-50 border-b border-gray-200">
+          <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-500">#</th>
+          <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-500">Title</th>
+          <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-500">Author</th>
+          <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-500">Company</th>
+          <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-500">Severity</th>
+          <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-500">Status</th>
+          <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-500">Submitted</th>
+          <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-500">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        {% for report in reports %}
+        <tr class="hover:bg-gray-50 transition-colors cursor-pointer" onclick="window.location.href='{% url 'report_review' report.pk %}'">
+          <td class="px-6 py-4 text-sm text-gray-700">{{ report.pk }}</td>
+          <td class="px-6 py-4">
+            <span class="font-medium text-indigo-600 hover:text-indigo-800">{{ report.title }}</span>
+          </td>
+          <td class="px-6 py-4 text-sm text-gray-700">{{ report.author.get_full_name|default:report.author.username }}</td>
+          <td class="px-6 py-4 text-sm text-gray-700">{{ report.engagement.request.company_name }}</td>
+          <td class="px-6 py-4">
+            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide
+              {% if report.severity == 'critical' %}bg-red-50 text-red-700 border border-red-200
+              {% elif report.severity == 'high' %}bg-orange-50 text-orange-700 border border-orange-200
+              {% elif report.severity == 'medium' %}bg-amber-50 text-amber-700 border border-amber-200
+              {% elif report.severity == 'low' %}bg-emerald-50 text-emerald-700 border border-emerald-200
+              {% else %}bg-blue-50 text-blue-700 border border-blue-200{% endif %}">
+              {{ report.get_severity_display }}
+            </span>
+          </td>
+          <td class="px-6 py-4">
+            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide
+              {% if report.status == 'submitted' %}bg-blue-50 text-blue-700 border border-blue-200
+              {% elif report.status == 'approved' %}bg-emerald-50 text-emerald-700 border border-emerald-200
+              {% elif report.status == 'rejected' %}bg-red-50 text-red-700 border border-red-200
+              {% else %}bg-gray-100 text-gray-600 border border-gray-200{% endif %}">
+              {{ report.get_status_display }}
+            </span>
+          </td>
+          <td class="px-6 py-4 text-sm text-gray-500">{{ report.created_at|date:"d M Y" }}</td>
+          <td class="px-6 py-4">
+            <a href="{% url 'report_review' report.pk %}"
+               class="inline-flex items-center px-3 py-1.5 bg-indigo-50 text-indigo-700 text-xs font-medium rounded-lg hover:bg-indigo-100 transition"
+               onclick="event.stopPropagation()">
+              <i class="fas fa-eye mr-1"></i> Review
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="py-16 text-center">
+    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 text-gray-400 mb-4">
+      <i class="fas fa-file-alt text-2xl"></i>
+    </div>
+    <h3 class="text-lg font-medium text-gray-900 mb-1">No reports found</h3>
+    <p class="text-gray-500">Reports submitted by pentesters will appear here.</p>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}

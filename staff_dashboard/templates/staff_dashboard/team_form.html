@@ -1,0 +1,106 @@
+{% extends 'staff_dashboard/base.html' %}
+
+{% block title %}{% if is_edit %}Edit Team{% else %}Create Team{% endif %}{% endblock %}
+
+{% block content %}
+<div class="mb-8">
+    <h2 class="text-3xl font-bold text-gray-900">
+        {% if is_edit %}Edit Team: {{ team.name }}{% else %}Create New Team{% endif %}
+    </h2>
+    <p class="text-gray-600 mt-2">
+        {% if is_edit %}Update team information{% else %}Add a new team to your organization{% endif %}
+    </p>
+</div>
+
+<div class="max-w-2xl">
+    <div class="bg-white rounded-lg shadow-md p-8">
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+            
+            <!-- Team Name -->
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                    Team Name <span class="text-red-500">*</span>
+                </label>
+                <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    value="{% if team %}{{ team.name }}{% endif %}"
+                    required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="e.g., Red Team, SOC Team, Penetration Testing"
+                >
+            </div>
+            
+            <!-- Description -->
+            <div>
+                <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+                    Description
+                </label>
+                <textarea 
+                    id="description" 
+                    name="description" 
+                    rows="4"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Brief description of the team's purpose and responsibilities"
+                >{% if team %}{{ team.description }}{% endif %}</textarea>
+            </div>
+            
+            <!-- Team Lead -->
+            <div>
+                <label for="team_lead" class="block text-sm font-medium text-gray-700 mb-2">
+                    Team Lead
+                </label>
+                <select 
+                    id="team_lead" 
+                    name="team_lead"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                    <option value="">-- No Lead Assigned --</option>
+                    {% for user in potential_leads %}
+                    <option value="{{ user.id }}" {% if team and team.team_lead.id == user.id %}selected{% endif %}>
+                        {{ user.username }} ({{ user.profile.role|title }})
+                    </option>
+                    {% endfor %}
+                </select>
+                <p class="text-sm text-gray-500 mt-1">
+                    <i class="fas fa-info-circle mr-1"></i>Select a team lead from analysts and pentesters
+                </p>
+            </div>
+            
+            <!-- Active Status (only for edit) -->
+            {% if is_edit %}
+            <div>
+                <label class="flex items-center">
+                    <input 
+                        type="checkbox" 
+                        name="is_active"
+                        {% if team.is_active %}checked{% endif %}
+                        class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    >
+                    <span class="ml-2 text-sm font-medium text-gray-700">Team is active</span>
+                </label>
+                <p class="text-sm text-gray-500 mt-1 ml-7">
+                    Inactive teams won't appear in team listings
+                </p>
+            </div>
+            {% endif %}
+            
+            <!-- Buttons -->
+            <div class="flex items-center justify-end space-x-4 pt-6 border-t">
+                <a href="{% if is_edit %}{% url 'team_detail' team.id %}{% else %}{% url 'team_list' %}{% endif %}" 
+                   class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
+                    Cancel
+                </a>
+                <button 
+                    type="submit"
+                    class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition">
+                    <i class="fas fa-save mr-2"></i>
+                    {% if is_edit %}Update Team{% else %}Create Team{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

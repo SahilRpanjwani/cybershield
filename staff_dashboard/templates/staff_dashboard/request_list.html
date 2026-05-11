@@ -1,0 +1,83 @@
+{% extends 'staff_dashboard/base.html' %}
+
+{% block title %}Pentest Requests{% endblock %}
+
+{% block content %}
+<div class="mb-8 flex justify-between items-center">
+    <div>
+        <h2 class="text-3xl font-bold text-gray-900">Pentest Requests</h2>
+        <p class="text-gray-600 mt-2">Manage and review incoming security assessment applications</p>
+    </div>
+    <div class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold">
+        Total: {{ requests|length }}
+    </div>
+</div>
+
+<div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Company</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Type</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Client</th>
+                <th class="px-6 py-4 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            {% for req in requests %}
+            <tr class="hover:bg-gray-50 transition duration-150">
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm font-semibold text-gray-900">{{ req.company_name }}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded">
+                        {{ req.get_request_type_display }}
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    {% if req.engagement and req.engagement.status == 'completed' %}
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                            <span class="w-2 h-2 mr-1.5 bg-gray-400 rounded-full"></span>
+                            Completed
+                        </span>
+                    {% elif req.status == 'pending' %}
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                            <span class="w-2 h-2 mr-1.5 bg-yellow-400 rounded-full"></span>
+                            Pending
+                        </span>
+                    {% elif req.status == 'approved' %}
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            <span class="w-2 h-2 mr-1.5 bg-green-400 rounded-full"></span>
+                            Approved
+                        </span>
+                    {% else %}
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                            {{ req.status|title }}
+                        </span>
+                    {% endif %}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    <i class="fas fa-user-circle mr-1 opacity-50"></i> {{ req.client.username }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+                    <a href="{% url 'request_detail' req.id %}" class="text-blue-600 hover:text-blue-900 bg-blue-50 px-3 py-1 rounded">View</a>
+
+                    {% if req.status == "pending" %}
+                        <a href="{% url 'approve_request' req.id %}" class="text-green-600 hover:text-green-900 bg-green-50 px-3 py-1 rounded">Approve</a>
+                        <a href="{% url 'reject_request' req.id %}" class="text-red-600 hover:text-red-900 bg-red-50 px-3 py-1 rounded">Reject</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="px-6 py-10 text-center text-gray-500">
+                    <i class="fas fa-inbox text-4xl mb-3 block"></i>
+                    No requests found.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

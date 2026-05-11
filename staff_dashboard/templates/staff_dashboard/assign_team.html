@@ -1,0 +1,175 @@
+{% extends 'staff_dashboard/base.html' %}
+
+{% block title %}Assign Team | CyberShield Admin{% endblock %}
+{% block page_title %}Assign Team{% endblock %}
+{% block page_description %}Select a team and set the engagement timeline{% endblock %}
+
+{% block content %}
+
+<div class="max-w-2xl mx-auto">
+  <!-- Request Info Card -->
+  <div class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl border border-indigo-100 p-5 mb-6">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center">
+        <i class="fas fa-building"></i>
+      </div>
+      <div>
+        <p class="text-sm text-gray-600">Request for</p>
+        <p class="font-bold text-gray-900">{{ pentest_request.company_name }}</p>
+        <p class="text-xs text-gray-500">{{ pentest_request.get_request_type_display }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Form Card -->
+  <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+    <form method="post" id="engagement-form" class="space-y-6">
+      {% csrf_token %}
+
+      <!-- Team Selection -->
+      <div>
+        <label for="{{ form.assigned_team.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+          <i class="fas fa-users text-indigo-400 mr-1.5"></i> Assign Team
+        </label>
+        {{ form.assigned_team }}
+        {% if form.assigned_team.errors %}
+          <p class="text-red-600 text-sm mt-1">{{ form.assigned_team.errors|striptags }}</p>
+        {% endif %}
+        <p class="text-xs text-gray-500 mt-1.5">Select the security team that will perform the assessment.</p>
+      </div>
+
+      <!-- Date Range -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Start Date -->
+        <div>
+          <label for="{{ form.start_date.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+            <i class="far fa-calendar-alt text-indigo-400 mr-1.5"></i> Start Date
+          </label>
+          {{ form.start_date }}
+          {% if form.start_date.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.start_date.errors|striptags }}</p>
+          {% endif %}
+          <p class="text-xs text-gray-500 mt-1.5">Must be at least 2 days from today.</p>
+        </div>
+
+        <!-- End Date -->
+        <div>
+          <label for="{{ form.end_date.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+            <i class="far fa-calendar-check text-indigo-400 mr-1.5"></i> End Date
+          </label>
+          {{ form.end_date }}
+          {% if form.end_date.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.end_date.errors|striptags }}</p>
+          {% endif %}
+          <p class="text-xs text-gray-500 mt-1.5">Must be after the start date.</p>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+        <a href="{% url 'request_detail' pentest_request.id %}"
+           class="px-5 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-xl transition shadow-sm">
+          Cancel
+        </a>
+        <button type="submit"
+                class="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-md shadow-indigo-200 transition flex items-center gap-2">
+          <i class="fas fa-user-check"></i> Assign Team
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Client-Side Date Validation -->
+<script>
+  (function() {
+    const form = document.getElementById('engagement-form');
+    const startDateInput = document.getElementById('{{ form.start_date.id_for_label }}');
+    const endDateInput = document.getElementById('{{ form.end_date.id_for_label }}');
+
+    function formatDate(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    // Set minimum start date (day after tomorrow)
+    const today = new Date();
+    const minStartDate = new Date(today);
+    minStartDate.setDate(today.getDate() + 2);
+    startDateInput.min = formatDate(minStartDate);
+
+    // Update end date min attribute when start date changes
+    startDateInput.addEventListener('change', function() {
+      const startDate = new Date(this.value);
+      if (!isNaN(startDate)) {
+        const minEndDate = new Date(startDate);
+        minEndDate.setDate(startDate.getDate() + 1);
+        endDateInput.min = formatDate(minEndDate);
+        if (endDateInput.value) {
+          const currentEnd = new Date(endDateInput.value);
+          if (currentEnd <= startDate) {
+            endDateInput.value = '';
+          }
+        }
+      }
+    });
+
+    if (startDateInput.value) {
+      startDateInput.dispatchEvent(new Event('change'));
+    }
+
+    form.addEventListener('submit', function(e) {
+      const startDate = new Date(startDateInput.value);
+      const endDate = new Date(endDateInput.value);
+      const minStart = new Date(minStartDate);
+
+      let errorMessage = '';
+      if (startDate < minStart) {
+        errorMessage = 'Start date must be at least 2 days from today.';
+      } else if (endDate <= startDate) {
+        errorMessage = 'End date must be after the start date.';
+      }
+
+      if (errorMessage) {
+        e.preventDefault();
+        alert(errorMessage);
+      }
+    });
+  })();
+</script>
+
+<!-- Style Django form widgets -->
+<style>
+  select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    color: #111827;
+    font-size: 0.875rem;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1.2rem;
+  }
+  input[type="date"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    color: #111827;
+    font-size: 0.875rem;
+  }
+  select:focus, input[type="date"]:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  }
+</style>
+
+{% endblock %}

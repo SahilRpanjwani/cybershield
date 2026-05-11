@@ -1,0 +1,310 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Report | CyberShield</title>
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Quill Rich Text Editor -->
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #f9fafb; }
+    /* Quill editor custom styling */
+    .ql-container {
+      border-bottom-left-radius: 0.75rem;
+      border-bottom-right-radius: 0.75rem;
+      background-color: #ffffff;
+      font-size: 0.95rem;
+      min-height: 200px;
+    }
+    .ql-toolbar {
+      border-top-left-radius: 0.75rem;
+      border-top-right-radius: 0.75rem;
+      background-color: #f9fafb;
+      border-color: #e5e7eb !important;
+    }
+    .ql-editor {
+      min-height: 200px;
+    }
+    /* Form input styling */
+    input, select, textarea {
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+    /* File input styling */
+    input[type="file"] {
+      padding: 0.5rem 0;
+      font-size: 0.875rem;
+    }
+    input[type="file"]::file-selector-button {
+      background-color: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      margin-right: 1rem;
+      font-weight: 500;
+      color: #374151;
+      cursor: pointer;
+      transition: background-color 0.15s;
+    }
+    input[type="file"]::file-selector-button:hover {
+      background-color: #e5e7eb;
+    }
+  </style>
+</head>
+<body class="antialiased">
+
+<!-- Navigation Bar -->
+<nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-xs">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16 items-center">
+      <a href="{% url 'users:home' %}" class="flex items-center space-x-2.5">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center shadow-md shadow-indigo-200">
+          <i class="fas fa-shield-halved text-white text-sm"></i>
+        </div>
+        <span class="text-xl font-bold tracking-tight text-gray-900">
+          CyberShield <span class="text-indigo-600">Portal</span>
+        </span>
+      </a>
+      <div class="flex items-center gap-4">
+        <a href="{% url 'users:pentester_dashboard' %}" class="text-sm font-medium text-indigo-600 hover:text-indigo-700 flex items-center gap-1">
+          <i class="fas fa-arrow-left"></i> Dashboard
+        </a>
+        <a href="{% url 'users:logout' %}" class="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition shadow-xs">
+          <i class="fas fa-sign-out-alt text-gray-500"></i> Logout
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+  <!-- Messages -->
+  {% if messages %}
+  <div class="mb-6 space-y-2">
+    {% for message in messages %}
+    <div class="p-4 rounded-xl {% if message.tags == 'success' %}bg-green-50 border-green-200 text-green-800{% elif message.tags == 'error' %}bg-red-50 border-red-200 text-red-800{% elif message.tags == 'warning' %}bg-yellow-50 border-yellow-200 text-yellow-800{% else %}bg-blue-50 border-blue-200 text-blue-800{% endif %} border flex items-start gap-3">
+      <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' %}fa-circle-exclamation{% elif message.tags == 'warning' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %} mt-0.5"></i>
+      <span>{{ message }}</span>
+      <button type="button" class="ml-auto text-gray-500 hover:text-gray-700" onclick="this.parentElement.remove()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Page Header -->
+  <div class="mb-8">
+    <span class="inline-block px-3 py-1 rounded-full bg-indigo-100 border border-indigo-200 text-indigo-700 text-xs font-bold uppercase tracking-wider mb-3">
+      <i class="fas fa-pen-fancy mr-1"></i> Pentester Workspace
+    </span>
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900 mb-2">New Assessment Report</h1>
+    <p class="text-gray-600 text-lg">Document your findings with clarity and precision.</p>
+  </div>
+
+  <!-- Main Form Card -->
+  <div class="bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden">
+    <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-indigo-50/50 to-purple-50/50">
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+          <i class="fas fa-file-signature text-indigo-600"></i> Report Details
+        </h2>
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-amber-50 text-amber-700 border border-amber-200">
+          <i class="fas fa-pencil mr-1"></i> Draft
+        </span>
+      </div>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="p-6 space-y-6">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+      <div class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl flex items-start gap-3">
+        <i class="fas fa-exclamation-circle mt-0.5"></i>
+        <span>{{ form.non_field_errors }}</span>
+      </div>
+      {% endif %}
+
+      <!-- Title -->
+      <div>
+        <label for="{{ form.title.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+          <i class="fas fa-heading text-indigo-400 mr-1.5"></i> Report Title
+        </label>
+        {{ form.title }}
+        {% if form.title.errors %}
+          <p class="text-red-600 text-sm mt-1">{{ form.title.errors|striptags }}</p>
+        {% endif %}
+        <p class="text-xs text-gray-500 mt-1.5">Use a clear title like "Web Application Pentest – Client Name (MM/YYYY)"</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Engagement -->
+        <div>
+          <label for="{{ form.engagement.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+            <i class="fas fa-diagram-project text-indigo-400 mr-1.5"></i> Engagement
+          </label>
+          {{ form.engagement }}
+          {% if form.engagement.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.engagement.errors|striptags }}</p>
+          {% endif %}
+          <p class="text-xs text-gray-500 mt-1.5">Select the associated engagement.</p>
+        </div>
+
+        <!-- Severity -->
+        <div>
+          <label for="{{ form.severity.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+            <i class="fas fa-exclamation-triangle text-indigo-400 mr-1.5"></i> Overall Severity
+          </label>
+          {{ form.severity }}
+          {% if form.severity.errors %}
+            <p class="text-red-600 text-sm mt-1">{{ form.severity.errors|striptags }}</p>
+          {% endif %}
+          <p class="text-xs text-gray-500 mt-1.5">Highest risk level found during assessment.</p>
+        </div>
+      </div>
+
+      <!-- Executive Summary -->
+      <div>
+        <label for="{{ form.summary.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+          <i class="fas fa-align-left text-indigo-400 mr-1.5"></i> Executive Summary
+        </label>
+        {{ form.summary }}
+        {% if form.summary.errors %}
+          <p class="text-red-600 text-sm mt-1">{{ form.summary.errors|striptags }}</p>
+        {% endif %}
+        <p class="text-xs text-gray-500 mt-1.5">A concise overview of the assessment scope, methodology, and key findings.</p>
+      </div>
+
+      <!-- Findings (Rich Text) -->
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+          <i class="fas fa-bug text-indigo-400 mr-1.5"></i> Detailed Findings
+        </label>
+        <div id="findings_editor" class="quill-editor border border-gray-200 rounded-xl overflow-hidden"></div>
+        <textarea name="findings" id="findings" class="hidden"></textarea>
+        {% if form.findings.errors %}
+          <p class="text-red-600 text-sm mt-1">{{ form.findings.errors|striptags }}</p>
+        {% endif %}
+        <p class="text-xs text-gray-500 mt-2">Structure each finding with description, impact, reproduction steps, and remediation.</p>
+      </div>
+
+      <!-- Attachments -->
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+          <i class="fas fa-paperclip text-indigo-400 mr-1.5"></i> Attachments
+        </label>
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-4">
+          {{ form.attachments }}
+        </div>
+        {% if form.attachments.errors %}
+          <p class="text-red-600 text-sm mt-1">{{ form.attachments.errors|striptags }}</p>
+        {% endif %}
+        <p class="text-xs text-gray-500 mt-1.5">Upload screenshots, logs, or supporting files. Multiple files allowed.</p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row justify-end gap-3 pt-6 border-t border-gray-100">
+        <a href="{% url 'users:pentester_dashboard' %}" class="px-5 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-xl transition shadow-sm text-center">
+          <i class="fas fa-times mr-2"></i> Cancel
+        </a>
+        <button type="submit" name="action" value="draft" class="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-xl transition shadow-sm flex items-center justify-center gap-2">
+          <i class="fas fa-save"></i> Save Draft
+        </button>
+        <button type="submit" name="action" value="submit" class="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-md shadow-indigo-200 transition flex items-center justify-center gap-2">
+          <i class="fas fa-paper-plane"></i> Submit Report
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Footer Note -->
+  <div class="mt-6 text-center">
+    <p class="text-xs text-gray-400 flex items-center justify-center gap-1">
+      <i class="fas fa-lock"></i> All data is encrypted and stored securely. Submitted reports will be reviewed by an admin.
+    </p>
+  </div>
+</main>
+
+<!-- Quill Initialization -->
+<script>
+  (function() {
+    // Initialize Quill editor
+    var quill = new Quill('#findings_editor', {
+      theme: 'snow',
+      modules: {
+        toolbar: [
+          ['bold', 'italic', 'underline', 'strike'],
+          ['blockquote', 'code-block'],
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+          ['link', 'image'],
+          ['clean']
+        ]
+      },
+      placeholder: 'Describe each vulnerability in detail: background, steps to reproduce, impact, and remediation recommendations...'
+    });
+
+    const findingsField = document.getElementById('findings');
+    const form = document.querySelector('form');
+
+    // Sync Quill content to hidden textarea
+    quill.on('text-change', function() {
+      findingsField.value = quill.root.innerHTML;
+    });
+
+    // Load existing content (for edit mode)
+    {% if form.findings.value %}
+      quill.root.innerHTML = `{{ form.findings.value|escapejs }}`;
+      findingsField.value = `{{ form.findings.value|escapejs }}`;
+    {% else %}
+      // Set a default template if empty
+      quill.root.innerHTML = `<h3>1. Vulnerability Name</h3><p><strong>Description:</strong> ...</p><p><strong>Impact:</strong> ...</p><p><strong>Steps to Reproduce:</strong></p><ol><li>...</li></ol><p><strong>Remediation:</strong> ...</p><p><br></p>`;
+      findingsField.value = quill.root.innerHTML;
+    {% endif %}
+
+    // Ensure sync before submit
+    form.addEventListener('submit', function() {
+      findingsField.value = quill.root.innerHTML;
+    });
+
+    // Apply Tailwind classes to Django form widgets
+    const titleInput = document.getElementById('{{ form.title.id_for_label }}');
+    const summaryTextarea = document.getElementById('{{ form.summary.id_for_label }}');
+    const engagementSelect = document.getElementById('{{ form.engagement.id_for_label }}');
+    const severitySelect = document.getElementById('{{ form.severity.id_for_label }}');
+
+    if (titleInput) {
+      titleInput.classList.add('w-full', 'px-4', 'py-3', 'bg-gray-50', 'border', 'border-gray-200', 'rounded-xl', 'text-gray-900', 'placeholder-gray-400', 'focus:outline-none', 'focus:border-indigo-500', 'focus:ring-2', 'focus:ring-indigo-200');
+    }
+    if (summaryTextarea) {
+      summaryTextarea.classList.add('w-full', 'px-4', 'py-3', 'bg-gray-50', 'border', 'border-gray-200', 'rounded-xl', 'text-gray-900', 'placeholder-gray-400', 'focus:outline-none', 'focus:border-indigo-500', 'focus:ring-2', 'focus:ring-indigo-200', 'resize-y');
+      summaryTextarea.rows = 4;
+    }
+    if (engagementSelect) {
+      engagementSelect.classList.add('w-full', 'px-4', 'py-3', 'bg-gray-50', 'border', 'border-gray-200', 'rounded-xl', 'text-gray-900', 'focus:outline-none', 'focus:border-indigo-500', 'focus:ring-2', 'focus:ring-indigo-200', 'appearance-none', 'bg-[url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%236b7280%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%222%22%20d%3D%22M19%209l-7%207-7-7%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E")]', 'bg-no-repeat', 'bg-[right_1rem_center]', 'bg-[length:1.2rem]');
+    }
+    if (severitySelect) {
+      severitySelect.classList.add('w-full', 'px-4', 'py-3', 'bg-gray-50', 'border', 'border-gray-200', 'rounded-xl', 'text-gray-900', 'focus:outline-none', 'focus:border-indigo-500', 'focus:ring-2', 'focus:ring-indigo-200', 'appearance-none', 'bg-[url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%236b7280%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%222%22%20d%3D%22M19%209l-7%207-7-7%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E")]', 'bg-no-repeat', 'bg-[right_1rem_center]', 'bg-[length:1.2rem]');
+    }
+  })();
+</script>
+
+</body>
+</html>

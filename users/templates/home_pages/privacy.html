@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy | CyberShield</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+
+  <!-- Navigation (same as homepage) -->
+  <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        <a href="{% url 'users:home' %}" class="flex items-center space-x-2">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center shadow-md shadow-indigo-200">
+            <i class="fas fa-shield-halved text-white text-sm"></i>
+          </div>
+          <span class="text-2xl font-bold tracking-tight text-gray-900">
+            Cyber<span class="text-indigo-600">Shield</span>
+          </span>
+        </a>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="{% url 'users:home' %}#platform" class="text-gray-600 hover:text-indigo-600 font-medium text-sm transition">Platform</a>
+          <a href="{% url 'users:home' %}#solutions" class="text-gray-600 hover:text-indigo-600 font-medium text-sm transition">Solutions</a>
+          <a href="{% url 'users:home' %}#features" class="text-gray-600 hover:text-indigo-600 font-medium text-sm transition">Features</a>
+          <a href="{% url 'users:login' %}" class="text-gray-600 hover:text-indigo-600 font-medium text-sm transition">Login</a>
+          <a href="{% url 'users:register' %}" class="inline-flex items-center px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-sm transition">
+            Get Started <i class="fas fa-arrow-right ml-2 text-xs"></i>
+          </a>
+        </div>
+        <div class="md:hidden">
+          <a href="{% url 'users:register' %}" class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-semibold">Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="max-w-4xl mx-auto px-6 py-16 lg:py-20">
+    <div class="mb-12">
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 mb-4">Privacy Policy</h1>
+      <p class="text-gray-500">Last updated: April 2026</p>
+    </div>
+
+    <div class="prose prose-lg prose-indigo max-w-none">
+      <p class="text-gray-600 leading-relaxed">
+        CyberShield respects your privacy and is committed to protecting your personal data.
+        This policy explains how we collect, use, and safeguard your information when you use our platform.
+      </p>
+
+      <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">1. Information We Collect</h2>
+      <p class="text-gray-600 leading-relaxed">
+        We collect information you provide directly, such as your name, email address, company name,
+        and payment details. We also automatically collect certain technical data, including IP address,
+        browser type, and usage logs to ensure service security and performance.
+      </p>
+
+      <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">2. How We Use Your Information</h2>
+      <p class="text-gray-600 leading-relaxed">
+        Your data is used to deliver and improve our offensive security services, communicate with you
+        about your account and security findings, process transactions, and comply with legal obligations.
+        We never sell your personal information to third parties.
+      </p>
+
+      <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">3. Data Sharing & Subprocessors</h2>
+      <p class="text-gray-600 leading-relaxed">
+        We may share information with trusted service providers (e.g., cloud hosting, email delivery)
+        who are contractually bound to protect your data. All subprocessors adhere to GDPR and industry
+        standard data protection clauses.
+      </p>
+
+      <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">4. Cookies & Tracking</h2>
+      <p class="text-gray-600 leading-relaxed">
+        We use essential cookies to maintain your session and ensure platform security. We do not use
+        third‑party advertising cookies or tracking pixels for marketing purposes without your consent.
+      </p>
+
+      <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">5. Your Rights</h2>
+      <p class="text-gray-600 leading-relaxed">
+        Depending on your jurisdiction, you may have the right to access, correct, or delete your
+        personal data. To exercise these rights, please contact us at privacy@cybershield.example.
+      </p>
+
+      <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">6. Contact Us</h2>
+      <p class="text-gray-600 leading-relaxed">
+        If you have any questions about this Privacy Policy, reach out to our Data Protection Officer at
+        <a href="mailto:privacy@cybershield.example" class="text-indigo-600 hover:underline">privacy@cybershield.example</a>.
+      </p>
+    </div>
+  </main>
+
+  <!-- Footer (same as homepage) -->
+  <footer class="border-t border-gray-200 py-12">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+        <a href="{% url 'users:home' %}" class="flex items-center space-x-2">
+          <i class="fas fa-shield-halved text-indigo-600 text-xl"></i>
+          <span class="font-bold text-gray-900 text-xl">CyberShield</span>
+        </a>
+        <div class="flex gap-8 text-sm text-gray-500">
+          <a href="{% url 'users:privacy' %}" class="hover:text-indigo-600">Privacy</a>
+          <a href="{% url 'users:security' %}" class="hover:text-indigo-600">Security</a>
+          <a href="{% url 'users:blog' %}" class="hover:text-indigo-600">Blog / Resources</a>
+          <a href="{% url 'users:contact' %}" class="hover:text-indigo-600">Contact</a>
+        </div>
+        <p class="text-sm text-gray-400">© 2026 CyberShield Inc. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,426 @@
+{% extends 'staff_dashboard/base.html' %}
+
+{% block title %}{{ team.name }} | CyberShield Admin{% endblock %}
+{% block page_title %}{{ team.name }}{% endblock %}
+{% block page_description %}Team details, members, and assigned work{% endblock %}
+
+{% block content %}
+
+<!-- Action Bar -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+  <div class="flex gap-3">
+    <a href="{% url 'team_edit' team.id %}" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition shadow-sm">
+      <i class="fas fa-edit"></i> Edit Team
+    </a>
+    <a href="{% url 'team_delete' team.id %}" class="inline-flex items-center gap-2 px-4 py-2 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-sm font-medium rounded-lg transition">
+      <i class="fas fa-trash"></i> Delete
+    </a>
+  </div>
+  <a href="{% url 'team_list' %}" class="text-sm font-medium text-indigo-600 hover:text-indigo-700">
+    <i class="fas fa-arrow-left mr-1"></i> Back to Teams
+  </a>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+  <!-- Left Column: Team Info -->
+  <div class="lg:col-span-1 space-y-6">
+
+    <!-- Information Card -->
+    <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+      <h3 class="text-lg font-bold text-gray-900 mb-4">Team Information</h3>
+      <div class="space-y-4">
+        <div>
+          <p class="text-xs font-medium uppercase tracking-wider text-gray-500 mb-1">Team Lead</p>
+          <p class="font-medium text-gray-900 flex items-center gap-2">
+            {% if team.team_lead %}
+              <span class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold">
+                {{ team.team_lead.username|slice:":1"|upper }}
+              </span>
+              {{ team.team_lead.username }}
+            {% else %}
+              <span class="w-8 h-8 rounded-full bg-gray-100 text-gray-400 flex items-center justify-center">
+                <i class="fas fa-user-slash"></i>
+              </span>
+              Not assigned
+            {% endif %}
+          </p>
+        </div>
+
+        <div>
+          <p class="text-xs font-medium uppercase tracking-wider text-gray-500 mb-1">Status</p>
+          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide {% if team.is_active %}bg-emerald-50 text-emerald-700 border border-emerald-200{% else %}bg-red-50 text-red-700 border border-red-200{% endif %}">
+            {% if team.is_active %}<i class="fas fa-check-circle mr-1"></i>Active{% else %}<i class="fas fa-times-circle mr-1"></i>Inactive{% endif %}
+          </span>
+        </div>
+
+        <div>
+          <p class="text-xs font-medium uppercase tracking-wider text-gray-500 mb-1">Total Members</p>
+          <p class="font-medium text-gray-900"><i class="fas fa-users text-indigo-500 mr-1"></i>{{ members.count }}</p>
+        </div>
+
+        <div>
+          <p class="text-xs font-medium uppercase tracking-wider text-gray-500 mb-1">Active Tasks</p>
+          <p class="font-medium text-gray-900"><i class="fas fa-tasks text-indigo-500 mr-1"></i>{{ active_tasks|length }}</p>
+        </div>
+
+        <div>
+          <p class="text-xs font-medium uppercase tracking-wider text-gray-500 mb-1">Reports</p>
+          <p class="font-medium text-gray-900"><i class="fas fa-file-alt text-indigo-500 mr-1"></i>{{ reports|length }}</p>
+        </div>
+
+        <div>
+          <p class="text-xs font-medium uppercase tracking-wider text-gray-500 mb-1">Scan Findings</p>
+          <p class="font-medium text-gray-900"><i class="fas fa-bug text-indigo-500 mr-1"></i>{{ scan_results|length }}</p>
+        </div>
+
+        <div>
+          <p class="text-xs font-medium uppercase tracking-wider text-gray-500 mb-1">Created</p>
+          <p class="font-medium text-gray-900"><i class="far fa-calendar-alt text-indigo-500 mr-1"></i>{{ team.created_at|date:"M d, Y" }}</p>
+        </div>
+
+        <div>
+          <p class="text-xs font-medium uppercase tracking-wider text-gray-500 mb-1">Last Updated</p>
+          <p class="font-medium text-gray-900"><i class="far fa-clock text-indigo-500 mr-1"></i>{{ team.updated_at|date:"M d, Y" }}</p>
+        </div>
+      </div>
+    </div>
+
+    {% if team.description %}
+    <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+      <h3 class="text-lg font-bold text-gray-900 mb-3">Description</h3>
+      <p class="text-gray-600 leading-relaxed">{{ team.description }}</p>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Right Column: Members, Tasks, Reports, Scan Results, Add -->
+  <div class="lg:col-span-2 space-y-6">
+
+    <!-- Members List -->
+    <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+      <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+        <h3 class="text-lg font-bold text-gray-900">Team Members ({{ members.count }})</h3>
+      </div>
+
+      {% if members %}
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead class="bg-gray-50 border-b border-gray-200">
+            <tr>
+              <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Member</th>
+              <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Role</th>
+              <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Joined</th>
+              <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            {% for member in members %}
+            <tr class="hover:bg-gray-50 transition-colors">
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                    {{ member.user.username|slice:":1"|upper }}
+                  </div>
+                  <div>
+                    <p class="font-semibold text-gray-900">{{ member.user.username }}</p>
+                    <p class="text-xs text-gray-500">{{ member.user.email }}</p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-200">
+                  {{ member.user.profile.role|title }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-500">{{ member.joined_at|date:"M d, Y" }}</td>
+              <td class="px-6 py-4">
+                <a href="{% url 'team_remove_member' team.id member.id %}"
+                   class="text-red-600 hover:text-red-700 text-sm font-medium"
+                   onclick="return confirm('Remove {{ member.user.username }} from this team?')">
+                  <i class="fas fa-user-minus mr-1"></i> Remove
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="py-12 text-center">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 text-gray-400 mb-3">
+          <i class="fas fa-users text-2xl"></i>
+        </div>
+        <p class="text-gray-500">No members in this team yet</p>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Current Tasks -->
+    <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+      <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+        <h3 class="text-lg font-bold text-gray-900">Current Tasks ({{ active_tasks|length }})</h3>
+      </div>
+
+      {% if active_tasks %}
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead class="bg-gray-50 border-b border-gray-200">
+            <tr>
+              <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Task</th>
+              <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Assigned To</th>
+              <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Status</th>
+              <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Due</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            {% for task in active_tasks %}
+            <tr class="hover:bg-gray-50 transition-colors">
+              <td class="px-6 py-4">
+                <div>
+                  <p class="font-semibold text-gray-900">{{ task.title }}</p>
+                  <p class="text-xs text-gray-500">{{ task.engagement.request.company_name }}</p>
+                </div>
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-2">
+                  {% if task.assigned_to %}
+                    <span class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold">
+                      {{ task.assigned_to.username|slice:":1"|upper }}
+                    </span>
+                    {{ task.assigned_to.username }}
+                  {% else %}
+                    <span class="text-gray-400">Unassigned</span>
+                  {% endif %}
+                </div>
+              </td>
+              <td class="px-6 py-4">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide
+                  {% if task.status == 'in_progress' %}bg-amber-50 text-amber-700 border border-amber-200
+                  {% elif task.status == 'blocked' %}bg-red-50 text-red-700 border border-red-200
+                  {% elif task.status == 'pending' %}bg-blue-50 text-blue-700 border border-blue-200
+                  {% else %}bg-gray-100 text-gray-600 border border-gray-200{% endif %}">
+                  {{ task.get_status_display }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-500">
+                {{ task.due_date|date:"M d, Y"|default:"No due date" }}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="py-12 text-center">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 text-gray-400 mb-3">
+          <i class="fas fa-tasks text-2xl"></i>
+        </div>
+        <p class="text-gray-500">No active tasks for this team</p>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Completed Tasks -->
+    <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+      <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+        <h3 class="text-lg font-bold text-gray-900">Completed Tasks ({{ completed_tasks|length }})</h3>
+      </div>
+
+      {% if completed_tasks %}
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead class="bg-gray-50 border-b border-gray-200">
+            <tr>
+              <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Task</th>
+              <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Assigned To</th>
+              <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Completed</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            {% for task in completed_tasks %}
+            <tr class="hover:bg-gray-50 transition-colors">
+              <td class="px-6 py-4">
+                <div>
+                  <p class="font-semibold text-gray-900">{{ task.title }}</p>
+                  <p class="text-xs text-gray-500">{{ task.engagement.request.company_name }}</p>
+                </div>
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-2">
+                  {% if task.assigned_to %}
+                    <span class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold">
+                      {{ task.assigned_to.username|slice:":1"|upper }}
+                    </span>
+                    {{ task.assigned_to.username }}
+                  {% else %}
+                    <span class="text-gray-400">Unassigned</span>
+                  {% endif %}
+                </div>
+              </td>
+              <td class="px-6 py-4">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-emerald-50 text-emerald-700 border border-emerald-200">
+                  <i class="fas fa-check-circle mr-1"></i> Completed
+                </span>
+                <p class="text-xs text-gray-500 mt-1">{{ task.updated_at|date:"M d, Y" }}</p>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="py-12 text-center">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 text-gray-400 mb-3">
+          <i class="fas fa-check-circle text-2xl"></i>
+        </div>
+        <p class="text-gray-500">No completed tasks yet</p>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Reports Section (NEW) -->
+    <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+      <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+        <h3 class="text-lg font-bold text-gray-900">Reports ({{ reports|length }})</h3>
+      </div>
+
+      {% if reports %}
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead class="bg-gray-50 border-b border-gray-200">
+            <tr>
+              <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Report</th>
+              <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Engagement</th>
+              <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Severity</th>
+              <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Status</th>
+              <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Author</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            {% for report in reports %}
+            <tr class="hover:bg-gray-50 transition-colors">
+              <td class="px-6 py-4">
+                <div>
+                  <p class="font-semibold text-gray-900">{{ report.title }}</p>
+                  <p class="text-xs text-gray-500">{{ report.created_at|date:"M d, Y" }}</p>
+                </div>
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-600">{{ report.engagement.request.company_name }}</td>
+              <td class="px-6 py-4">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide
+                  {% if report.severity == 'critical' %}bg-red-100 text-red-800 border border-red-200
+                  {% elif report.severity == 'high' %}bg-orange-100 text-orange-800 border border-orange-200
+                  {% elif report.severity == 'medium' %}bg-yellow-100 text-yellow-800 border border-yellow-200
+                  {% elif report.severity == 'low' %}bg-green-100 text-green-800 border border-green-200
+                  {% else %}bg-blue-100 text-blue-800 border border-blue-200{% endif %}">
+                  {{ report.get_severity_display }}
+                </span>
+              </td>
+              <td class="px-6 py-4">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide
+                  {% if report.status == 'approved' %}bg-emerald-50 text-emerald-700 border border-emerald-200
+                  {% elif report.status == 'submitted' %}bg-blue-50 text-blue-700 border border-blue-200
+                  {% elif report.status == 'rejected' %}bg-red-50 text-red-700 border border-red-200
+                  {% else %}bg-gray-100 text-gray-600 border border-gray-200{% endif %}">
+                  {{ report.get_status_display }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-600">{{ report.author.username }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="py-12 text-center">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 text-gray-400 mb-3">
+          <i class="fas fa-file-alt text-2xl"></i>
+        </div>
+        <p class="text-gray-500">No reports submitted for this team's engagements yet.</p>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Scan Results Section (NEW) -->
+    <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+      <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+        <h3 class="text-lg font-bold text-gray-900">Scan Findings ({{ scan_results|length }})</h3>
+      </div>
+
+      {% if scan_results %}
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead class="bg-gray-50 border-b border-gray-200">
+            <tr>
+              <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Module</th>
+              <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Severity</th>
+              <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Engagement</th>
+              <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Evidence</th>
+              <th class="px-6 py-3 text-xs font-bold uppercase tracking-wider text-gray-500">Created</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            {% for result in scan_results %}
+            <tr class="hover:bg-gray-50 transition-colors">
+              <td class="px-6 py-4 font-medium text-gray-900">{{ result.module }}</td>
+              <td class="px-6 py-4">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide
+                  {% if result.severity == 'critical' %}bg-red-100 text-red-800 border border-red-200
+                  {% elif result.severity == 'high' %}bg-orange-100 text-orange-800 border border-orange-200
+                  {% elif result.severity == 'medium' %}bg-yellow-100 text-yellow-800 border border-yellow-200
+                  {% elif result.severity == 'low' %}bg-green-100 text-green-800 border border-green-200
+                  {% else %}bg-gray-100 text-gray-800 border border-gray-200{% endif %}">
+                  {{ result.get_severity_display }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-600">{{ result.engagement.request.company_name }}</td>
+              <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">{{ result.evidence|truncatechars:50 }}</td>
+              <td class="px-6 py-4 text-sm text-gray-500">{{ result.created_at|date:"M d, Y" }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="py-12 text-center">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 text-gray-400 mb-3">
+          <i class="fas fa-bug text-2xl"></i>
+        </div>
+        <p class="text-gray-500">No scan findings for this team's engagements yet.</p>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Add Member Form -->
+    <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+      <h3 class="text-lg font-bold text-gray-900 mb-4">Add New Member</h3>
+
+      {% if available_users %}
+      <form method="POST" action="{% url 'team_add_member' team.id %}" class="flex flex-col sm:flex-row gap-3">
+        {% csrf_token %}
+        <select name="user_id" required
+                class="flex-1 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition">
+          <option value="">-- Select a user --</option>
+          {% for user in available_users %}
+          <option value="{{ user.id }}">
+            {{ user.username }} ({{ user.profile.role|title }})
+          </option>
+          {% endfor %}
+        </select>
+        <button type="submit"
+                class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+          <i class="fas fa-user-plus"></i> Add Member
+        </button>
+      </form>
+      {% else %}
+      <div class="py-6 text-center bg-gray-50 rounded-xl">
+        <i class="fas fa-info-circle text-indigo-400 mb-2"></i>
+        <p class="text-gray-600">All available users are already members of this team.</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

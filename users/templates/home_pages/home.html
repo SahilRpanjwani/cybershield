@@ -1,0 +1,392 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CyberShield | Continuous Offensive Security</title>
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .gradient-text {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .bg-gradient-radial {
+      background: radial-gradient(circle at 20% 30%, rgba(79, 70, 229, 0.08) 0%, transparent 50%);
+    }
+    .card-hover {
+      transition: all 0.25s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 30px -10px rgba(0,0,0,0.05);
+      border-color: #c7d2fe;
+    }
+    /* Accordion styles */
+    .acc-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, margin 0.3s;
+    }
+    .acc-item.active .acc-content {
+      max-height: 150px;
+      margin-top: 12px;
+    }
+    /* Visual panel text update */
+    .visual-desc {
+      display: none;
+    }
+    .visual-desc.active {
+      display: block;
+      animation: fadeScale 0.4s ease;
+    }
+    @keyframes fadeScale {
+      from { opacity: 0; transform: scale(0.98); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    /* Glow effect for CTA */
+    .glow {
+      box-shadow: 0 0 20px rgba(79, 70, 229, 0.3);
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+
+  <!-- Navigation -->
+  <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        <!-- Logo -->
+        <a href="{% url 'users:home' %}" class="flex items-center space-x-2">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center shadow-md shadow-indigo-200">
+            <i class="fas fa-shield-halved text-white text-sm"></i>
+          </div>
+          <span class="text-2xl font-bold tracking-tight text-gray-900">
+            Cyber<span class="text-indigo-600">Shield</span>
+          </span>
+        </a>
+
+        <!-- Nav Links -->
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="#platform" class="text-gray-600 hover:text-indigo-600 font-medium text-sm transition">Platform</a>
+          <a href="#solutions" class="text-gray-600 hover:text-indigo-600 font-medium text-sm transition">Solutions</a>
+          <a href="#features" class="text-gray-600 hover:text-indigo-600 font-medium text-sm transition">Features</a>
+          <a href="{% url 'users:login' %}" class="text-gray-600 hover:text-indigo-600 font-medium text-sm transition">Login</a>
+          <a href="{% url 'users:register' %}" class="inline-flex items-center px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-sm shadow-indigo-200 transition">
+            Get Started <i class="fas fa-arrow-right ml-2 text-xs"></i>
+          </a>
+        </div>
+
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <a href="{% url 'users:register' %}" class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-semibold">Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden bg-gradient-radial">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-24 md:py-32 text-center">
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-semibold tracking-wide mb-6">
+        <i class="fas fa-shield-halved"></i> TRUSTED BY FORTUNE 500
+      </div>
+
+      <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-gray-900 mb-6 leading-[1.1]">
+        The Continuous<br>
+        <span class="gradient-text">Offensive Security</span> Layer
+      </h1>
+      <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-10">
+        Stop playing catch-up with attackers. CyberShield combines AI-driven automation with elite ethical hackers to secure your perimeter 24/7.
+      </p>
+
+      <div class="flex flex-wrap gap-4 justify-center">
+        <a href="{% url 'users:register' %}" class="inline-flex items-center gap-2 px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-200 transition text-base glow">
+          <i class="fas fa-rocket"></i> Launch a Program
+        </a>
+        <a href="#platform" class="inline-flex items-center gap-2 px-6 py-3.5 bg-white border border-gray-300 hover:border-gray-400 text-gray-700 font-semibold rounded-xl shadow-sm transition text-base">
+          View Platform <i class="fas fa-chevron-down text-xs"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Solutions / Methodology -->
+  <section id="solutions" class="bg-gray-50 border-y border-gray-100 py-20">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-14">
+        <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">The Methodology</span>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mt-2 mb-4">Human Intelligence.<br>Machine Speed.</h2>
+        <p class="text-gray-600 text-lg">
+          Automated scanners find the "known-knowns," but attackers exploit creative gaps. CyberShield bridges this by deploying autonomous AI agents for grunt work, while our global researcher community tackles high-logic vulnerabilities that tools simply can't detect.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="bg-white p-8 rounded-2xl border border-gray-200 card-hover shadow-sm">
+          <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl mb-5">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Validation at Scale</h3>
+          <p class="text-gray-600">Don't just find vulnerabilities — validate their exploitability in real-time with agentic workflows.</p>
+        </div>
+        <div class="bg-white p-8 rounded-2xl border border-gray-200 card-hover shadow-sm">
+          <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl mb-5">
+            <i class="fas fa-brain"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Expert Intuition</h3>
+          <p class="text-gray-600">Access a vetted community of security researchers specialized in complex attack vectors.</p>
+        </div>
+        <div class="bg-white p-8 rounded-2xl border border-gray-200 card-hover shadow-sm">
+          <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl mb-5">
+            <i class="fas fa-filter"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Reduced Noise</h3>
+          <p class="text-gray-600">Our triage team removes 95% of false positives so developers focus only on real risk.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Platform Accordion + Visual Panel (images replaced with text) -->
+  <section id="platform" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <!-- Left: Accordion -->
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Our Ecosystem</span>
+          <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mt-2 mb-8">One Platform.<br>Total Exposure Control.</h2>
+
+          <div class="space-y-1">
+            <!-- Accordion Item 1 (active by default) -->
+            <div class="acc-item active border-b border-gray-200 py-4 cursor-pointer" data-panel="panel1">
+              <div class="flex justify-between items-center">
+                <h3 class="text-lg font-semibold text-gray-900">Vulnerability Disclosure (VDP)</h3>
+                <i class="fas fa-chevron-right text-indigo-500 text-sm transition-transform"></i>
+              </div>
+              <div class="acc-content text-gray-600">
+                The global standard for receiving and acting on vulnerabilities discovered by third parties — safely, securely, and at scale.
+              </div>
+            </div>
+            <!-- Accordion Item 2 -->
+            <div class="acc-item border-b border-gray-200 py-4 cursor-pointer" data-panel="panel2">
+              <div class="flex justify-between items-center">
+                <h3 class="text-lg font-semibold text-gray-900">Continuous Pentesting</h3>
+                <i class="fas fa-chevron-right text-gray-400 text-sm transition-transform"></i>
+              </div>
+              <div class="acc-content text-gray-600">
+                On-demand access to top-tier hackers for compliance-ready, time-bound security assessments with real deliverables.
+              </div>
+            </div>
+            <!-- Accordion Item 3 -->
+            <div class="acc-item border-b border-gray-200 py-4 cursor-pointer" data-panel="panel3">
+              <div class="flex justify-between items-center">
+                <h3 class="text-lg font-semibold text-gray-900">AI Red Teaming</h3>
+                <i class="fas fa-chevron-right text-gray-400 text-sm transition-transform"></i>
+              </div>
+              <div class="acc-content text-gray-600">
+                Specialized safety and security testing for LLMs and Generative AI deployments to prevent prompt injection and model abuse.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Visual Panel (Dynamic Text Card) -->
+        <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-3xl p-8 border border-indigo-100 shadow-inner">
+          <div class="text-center">
+            <i class="fas fa-shield-halved text-5xl text-indigo-600 mb-4"></i>
+            <div id="panel1" class="visual-desc active">
+              <h3 class="text-2xl font-bold text-gray-900 mb-2">VDP Dashboard</h3>
+              <p class="text-gray-700">Streamlined vulnerability intake, triage, and remediation workflow. Integrates with your existing tools.</p>
+            </div>
+            <div id="panel2" class="visual-desc">
+              <h3 class="text-2xl font-bold text-gray-900 mb-2">Pentesting Suite</h3>
+              <p class="text-gray-700">Real-time collaboration with ethical hackers. Schedule assessments and track findings.</p>
+            </div>
+            <div id="panel3" class="visual-desc">
+              <h3 class="text-2xl font-bold text-gray-900 mb-2">AI Safety Testing</h3>
+              <p class="text-gray-700">Simulate adversarial prompts and monitor LLM behavior to ensure safe deployment.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Indicators (replaces fake logos) -->
+  <section class="border-y border-gray-100 bg-gray-50/50 py-16">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+      <p class="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-6">Trusted by innovators worldwide</p>
+      <div class="flex flex-wrap justify-center gap-8 text-gray-500">
+        <i class="fas fa-building text-2xl"></i>
+        <i class="fas fa-cloud text-2xl"></i>
+        <i class="fas fa-database text-2xl"></i>
+        <i class="fas fa-code text-2xl"></i>
+        <i class="fas fa-lock text-2xl"></i>
+        <i class="fas fa-chart-line text-2xl"></i>
+      </div>
+      <p class="mt-4 text-sm text-gray-400">Fortune 500 · Unicorns · Governments</p>
+    </div>
+  </section>
+
+  <!-- Features Grid -->
+  <section id="features" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-14">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">Engineered for Enterprise Defense</h2>
+        <p class="text-gray-600 mt-3 text-lg">Everything you need to run a world-class security program.</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="p-6 rounded-xl border border-gray-200 bg-gray-50/50 card-hover">
+          <div class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center mb-4">
+            <i class="fas fa-code-branch"></i>
+          </div>
+          <h3 class="font-bold text-lg mb-1">SDLC Integration</h3>
+          <p class="text-gray-600 text-sm">Direct tickets into Jira, GitHub, or Azure DevOps with one-click remediation data.</p>
+        </div>
+        <div class="p-6 rounded-xl border border-gray-200 bg-gray-50/50 card-hover">
+          <div class="w-10 h-10 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center mb-4">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="font-bold text-lg mb-1">Risk Benchmarking</h3>
+          <p class="text-gray-600 text-sm">See how your security posture compares to industry peers in your specific sector.</p>
+        </div>
+        <div class="p-6 rounded-xl border border-gray-200 bg-gray-50/50 card-hover">
+          <div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center mb-4">
+            <i class="fas fa-user-shield"></i>
+          </div>
+          <h3 class="font-bold text-lg mb-1">Managed Triage</h3>
+          <p class="text-gray-600 text-sm">Security analysts verify every report so you only see valid, actionable vulnerabilities.</p>
+        </div>
+        <div class="p-6 rounded-xl border border-gray-200 bg-gray-50/50 card-hover">
+          <div class="w-10 h-10 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center mb-4">
+            <i class="fas fa-globe"></i>
+          </div>
+          <h3 class="font-bold text-lg mb-1">Global Researchers</h3>
+          <p class="text-gray-600 text-sm">Access a worldwide community of elite security experts available 24/7.</p>
+        </div>
+        <div class="p-6 rounded-xl border border-gray-200 bg-gray-50/50 card-hover">
+          <div class="w-10 h-10 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center mb-4">
+            <i class="fas fa-shield"></i>
+          </div>
+          <h3 class="font-bold text-lg mb-1">Compliance Ready</h3>
+          <p class="text-gray-600 text-sm">Align with SOC 2, ISO 27001, PCI-DSS, and other key industry standards.</p>
+        </div>
+        <div class="p-6 rounded-xl border border-gray-200 bg-gray-50/50 card-hover">
+          <div class="w-10 h-10 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center mb-4">
+            <i class="fas fa-rocket"></i>
+          </div>
+          <h3 class="font-bold text-lg mb-1">Rapid Deployment</h3>
+          <p class="text-gray-600 text-sm">Launch your security program in days, not months, with guided onboarding.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action (replaces fake stats) -->
+  <section class="bg-indigo-50/50 py-16">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+      <h3 class="text-2xl font-bold text-gray-900 mb-4">Join the world's most advanced security platform</h3>
+      <p class="text-gray-600 mb-8">Discover why organizations trust CyberShield to reduce risk and accelerate remediation.</p>
+      <a href="{% url 'users:register' %}" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 py-3 rounded-xl shadow-md transition glow">
+        Get Started <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- Final CTA Banner -->
+  <section class="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+    <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl p-10 md:p-14 text-center text-white shadow-xl shadow-indigo-200">
+      <h2 class="text-3xl md:text-4xl font-extrabold mb-4">Ready to secure your perimeter?</h2>
+      <p class="text-indigo-100 text-lg max-w-xl mx-auto mb-8">Join 1,000+ enterprises who trust CyberShield to find what attackers find first.</p>
+      <a href="{% url 'users:register' %}" class="inline-flex items-center gap-2 bg-white text-indigo-700 hover:bg-gray-100 font-bold px-8 py-4 rounded-xl shadow-md transition text-base">
+        Start Your Program <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-gray-200 py-12">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+        <a href="{% url 'users:home' %}" class="flex items-center space-x-2">
+          <i class="fas fa-shield-halved text-indigo-600 text-xl"></i>
+          <span class="font-bold text-gray-900 text-xl">CyberShield</span>
+        </a>
+        <div class="flex gap-8 text-sm text-gray-500">
+          <a href="{% url 'users:privacy' %}" class="hover:text-indigo-600">Privacy</a>
+          <a href="{% url 'users:security' %}" class="hover:text-indigo-600">Security</a>
+          <a href="{% url 'users:blog' %}" class="hover:text-indigo-600">Blog / Resources</a>
+          <a href="{% url 'users:contact' %}" class="hover:text-indigo-600">Contact</a>
+        </div>
+        <p class="text-sm text-gray-400">© 2026 CyberShield Inc. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Accordion and Smooth Scroll JavaScript -->
+  <script>
+    (function() {
+      const items = document.querySelectorAll('.acc-item');
+      const panels = {
+        panel1: document.getElementById('panel1'),
+        panel2: document.getElementById('panel2'),
+        panel3: document.getElementById('panel3')
+      };
+
+      function setActive(item) {
+        items.forEach(i => {
+          i.classList.remove('active');
+          const icon = i.querySelector('.fa-chevron-right');
+          if (icon) {
+            icon.style.transform = 'rotate(0deg)';
+            icon.classList.remove('text-indigo-500');
+            icon.classList.add('text-gray-400');
+          }
+        });
+        item.classList.add('active');
+        const activeIcon = item.querySelector('.fa-chevron-right');
+        if (activeIcon) {
+          activeIcon.style.transform = 'rotate(90deg)';
+          activeIcon.classList.add('text-indigo-500');
+          activeIcon.classList.remove('text-gray-400');
+        }
+
+        const panelId = item.getAttribute('data-panel');
+        Object.values(panels).forEach(p => { if(p) p.classList.remove('active'); });
+        if (panels[panelId]) panels[panelId].classList.add('active');
+      }
+
+      items.forEach(item => {
+        item.addEventListener('click', () => setActive(item));
+      });
+
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          const href = this.getAttribute('href');
+          if (href === "#") return;
+          const target = document.querySelector(href);
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

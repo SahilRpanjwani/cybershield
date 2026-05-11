@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog & Resources | CyberShield</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .card-hover {
+      transition: all 0.25s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 30px -10px rgba(0,0,0,0.05);
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+
+  <!-- Navigation (same as homepage) -->
+  <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        <a href="{% url 'users:home' %}" class="flex items-center space-x-2">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center shadow-md shadow-indigo-200">
+            <i class="fas fa-shield-halved text-white text-sm"></i>
+          </div>
+          <span class="text-2xl font-bold tracking-tight text-gray-900">
+            Cyber<span class="text-indigo-600">Shield</span>
+          </span>
+        </a>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="{% url 'users:home' %}#platform" class="text-gray-600 hover:text-indigo-600 font-medium text-sm transition">Platform</a>
+          <a href="{% url 'users:home' %}#solutions" class="text-gray-600 hover:text-indigo-600 font-medium text-sm transition">Solutions</a>
+          <a href="{% url 'users:home' %}#features" class="text-gray-600 hover:text-indigo-600 font-medium text-sm transition">Features</a>
+          <a href="{% url 'users:login' %}" class="text-gray-600 hover:text-indigo-600 font-medium text-sm transition">Login</a>
+          <a href="{% url 'users:register' %}" class="inline-flex items-center px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-sm transition">
+            Get Started <i class="fas fa-arrow-right ml-2 text-xs"></i>
+          </a>
+        </div>
+        <div class="md:hidden">
+          <a href="{% url 'users:register' %}" class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-semibold">Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-6 py-16 lg:py-20">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 mb-4">Security Insights & Resources</h1>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">Guides, research, and updates from the CyberShield team to help you stay ahead of threats.</p>
+    </div>
+
+    <!-- Placeholder Blog Post Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Post Card 1 -->
+      <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden card-hover shadow-sm">
+        <div class="h-40 bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center text-indigo-400">
+          <i class="fas fa-newspaper text-4xl"></i>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center gap-2 text-xs text-gray-500 mb-2">
+            <span class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded-full">Vulnerability Research</span>
+            <span>•</span>
+            <span>Apr 15, 2026</span>
+          </div>
+          <h3 class="text-xl font-bold mb-2 hover:text-indigo-600 transition">
+            <a href="#">The State of API Security in 2026</a>
+          </h3>
+          <p class="text-gray-600 text-sm mb-4">APIs remain the top attack vector. Learn how to protect your endpoints with proactive testing.</p>
+          <a href="#" class="text-indigo-600 font-medium text-sm hover:underline inline-flex items-center gap-1">
+            Read more <i class="fas fa-arrow-right text-xs"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Post Card 2 -->
+      <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden card-hover shadow-sm">
+        <div class="h-40 bg-gradient-to-br from-emerald-100 to-teal-100 flex items-center justify-center text-emerald-400">
+          <i class="fas fa-robot text-4xl"></i>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center gap-2 text-xs text-gray-500 mb-2">
+            <span class="bg-emerald-50 text-emerald-700 px-2 py-1 rounded-full">AI Security</span>
+            <span>•</span>
+            <span>Apr 8, 2026</span>
+          </div>
+          <h3 class="text-xl font-bold mb-2 hover:text-indigo-600 transition">
+            <a href="#">Red Teaming LLMs: What We've Learned</a>
+          </h3>
+          <p class="text-gray-600 text-sm mb-4">Prompt injection, jailbreaks, and data leakage — how to test generative AI applications.</p>
+          <a href="#" class="text-indigo-600 font-medium text-sm hover:underline inline-flex items-center gap-1">
+            Read more <i class="fas fa-arrow-right text-xs"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Post Card 3 -->
+      <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden card-hover shadow-sm">
+        <div class="h-40 bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center text-amber-400">
+          <i class="fas fa-shield-halved text-4xl"></i>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center gap-2 text-xs text-gray-500 mb-2">
+            <span class="bg-amber-50 text-amber-700 px-2 py-1 rounded-full">Compliance</span>
+            <span>•</span>
+            <span>Mar 28, 2026</span>
+          </div>
+          <h3 class="text-xl font-bold mb-2 hover:text-indigo-600 transition">
+            <a href="#">SOC 2 & Continuous Pentesting: A Complete Guide</a>
+          </h3>
+          <p class="text-gray-600 text-sm mb-4">How to satisfy SOC 2 requirements with automated offensive security workflows.</p>
+          <a href="#" class="text-indigo-600 font-medium text-sm hover:underline inline-flex items-center gap-1">
+            Read more <i class="fas fa-arrow-right text-xs"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Newsletter Signup (placeholder) -->
+    <div class="mt-16 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-3xl p-8 md:p-10 text-center border border-indigo-100">
+      <h3 class="text-2xl font-bold text-gray-900 mb-2">Stay ahead of threats</h3>
+      <p class="text-gray-600 mb-6">Get the latest security insights delivered to your inbox.</p>
+      <form class="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
+        <input type="email" placeholder="Enter your email" class="flex-1 px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <button type="submit" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition">Subscribe</button>
+      </form>
+      <p class="text-xs text-gray-500 mt-4">We respect your privacy. Unsubscribe at any time.</p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-gray-200 py-12">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+        <a href="{% url 'users:home' %}" class="flex items-center space-x-2">
+          <i class="fas fa-shield-halved text-indigo-600 text-xl"></i>
+          <span class="font-bold text-gray-900 text-xl">CyberShield</span>
+        </a>
+        <div class="flex gap-8 text-sm text-gray-500">
+          <a href="{% url 'users:privacy' %}" class="hover:text-indigo-600">Privacy</a>
+          <a href="{% url 'users:security' %}" class="hover:text-indigo-600">Security</a>
+          <a href="{% url 'users:blog' %}" class="hover:text-indigo-600">Blog / Resources</a>
+          <a href="{% url 'users:contact' %}" class="hover:text-indigo-600">Contact</a>
+        </div>
+        <p class="text-sm text-gray-400">© 2026 CyberShield Inc. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

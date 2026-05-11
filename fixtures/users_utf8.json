@@ -1,0 +1,290 @@
+[
+{
+  "model": "auth.user",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$mkUo2XEWbvSnzV9pdlVfO1$Qm5Nxo1hfh8gJzQfw9KWAHsKv7Em4YSh3epQlzAJXGI=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "john_web",
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john@cybershield.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-03T08:30:37.806Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 7,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$JLi730nVijJU2XLTLmyykI$yAqUd0qpL7J68hG1G7S6zwrPphqDGMRgAgieGEwWG7M=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "sarah_mobile",
+    "first_name": "Sarah",
+    "last_name": "Smith",
+    "email": "sarah@cybershield.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-03T08:30:38.217Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 8,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$zpWZ5FaizZWdmSuav477KH$BkQu8ao119n4BARgkLbA++rTSJlPEPaWt0CD7wDPlyg=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "mike_web",
+    "first_name": "Mike",
+    "last_name": "Johnson",
+    "email": "mike@cybershield.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-03T08:30:38.635Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 9,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$wXJ4qIX5JLUBjnbedDIOem$okfNgLmIga3t8UV2eF4znasQRyXBpseNvzLiUQIu69Q=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "alex_network",
+    "first_name": "Alex",
+    "last_name": "Brown",
+    "email": "alex@cybershield.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-03T08:30:39.062Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 10,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$NCQA1rEGkWebZ7r4fc5YNi$3hxFokOVUmTSDcoNmEOKy+N6iRFvFYl1skKopza599M=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "emma_soc",
+    "first_name": "Emma",
+    "last_name": "Wilson",
+    "email": "emma@cybershield.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-03T08:30:39.486Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 11,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$6yDyAvGqB3zl3lugqpWRkQ$6oVD/2xC+X5jY4vkh/IuC3KWhihcbSyEziv9gC/lmSo=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "david_network",
+    "first_name": "David",
+    "last_name": "Lee",
+    "email": "david@cybershield.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-03T08:30:39.920Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 12,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$DsW4Fyfvljq8Qdo2Kx2wau$e/2nazCd+JMmdqiPuu/OQntrDkAXrTNp5YMTcTTbvxM=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "client1",
+    "first_name": "Client",
+    "last_name": "One",
+    "email": "client1@example.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-03T08:30:40.343Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 13,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$91qVzyq2v4PuajzeqBZhjJ$GmUCCop2/+/hykVv5OjFnR5qm6b3YGVaOoCK54qA4+U=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "client2",
+    "first_name": "Client",
+    "last_name": "Two",
+    "email": "client2@example.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-03T08:30:40.771Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 14,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$pRMVH1vtZqG4XtB21K3lMK$P1+Hi1Oja4HO3OE99jVj1om0cVsixYFG6yk6hIoyNow=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "usernew",
+    "first_name": "user",
+    "last_name": "use",
+    "email": "usernew@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-03T10:10:46.521Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 15,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$qZgwrubPyOMznDXxnP8G8D$/UEozF1Xz3/itvqE07nzzmYInFCl4yKInm0lyYGQEoc=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "Mahir ",
+    "first_name": "Mahir",
+    "last_name": "Khalani",
+    "email": "mahirljku@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-02-03T10:19:23.378Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 16,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$5O1lrtYlJ3tnmMMhL1VQFN$lAFgcxREFruIHvFoQsiEad74Nuo0XU/1mej84fV2GH4=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "amit",
+    "first_name": "amit",
+    "last_name": "senjaliya",
+    "email": "amitlj@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-03T10:33:19.367Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 19,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$zjIMd3ptLUlwOdDXzLuUEk$9tRaObeOGBbq+Ecc1UFZq3ffEa0Z63A4Db+Z6QxFRmo=",
+    "last_login": "2026-04-20T08:57:14.579Z",
+    "is_superuser": false,
+    "username": "admin@cybershield.com",
+    "first_name": "Admin",
+    "last_name": "User",
+    "email": "admin@cybershield.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-02-26T06:08:04.270Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 21,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$4ATcd2tzpP7Saq3USg0wyJ$663e47+IB8QeVKo7ipGfBXjlhA92bBqCOm1kyudiiPI=",
+    "last_login": "2026-04-20T08:54:43.257Z",
+    "is_superuser": false,
+    "username": "Mr MD",
+    "first_name": "Mobile",
+    "last_name": "Destroyer",
+    "email": "mobiledestroy@cybershield.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-03-24T11:20:02.246Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 22,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$1hBJ7krpYIhT5SXyyZIhY7$u9/SMB2K4CQHWswdERGhAymrXH2rrLL8MYeS53BO8gQ=",
+    "last_login": "2026-04-20T07:31:53.866Z",
+    "is_superuser": false,
+    "username": "nicknamesrp@gmail.com",
+    "first_name": "Sahil",
+    "last_name": "Panjwani",
+    "email": "nicknamesrp@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-03-24T11:23:58.455Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 23,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$nURUdo21dZ4vSbGyBSEN07$jocRZtglvJzU3iGa7vHaKiwFyk4bWmAaMmtn0ljPyAA=",
+    "last_login": "2026-04-07T10:08:21.669Z",
+    "is_superuser": false,
+    "username": "amitsenjaliya043@gmail.com",
+    "first_name": "Amit",
+    "last_name": "Senjaliya",
+    "email": "amitsenjaliya043@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-04-07T10:07:56.440Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 24,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$XlhgcpFaELmZB5ipbult9T$FcGIuQcvCIYstorshT5YwT308LjeuODm9a4u09ihTVg=",
+    "last_login": "2026-04-20T07:30:25.971Z",
+    "is_superuser": false,
+    "username": "SP",
+    "first_name": "Strongest",
+    "last_name": "Pentester",
+    "email": "strongpen@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-04-19T12:21:04.617Z",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]

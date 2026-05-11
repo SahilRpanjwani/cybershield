@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CyberShield Portal{% endblock %}</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+        }
+        /* Smooth transitions */
+        .nav-link {
+            transition: all 0.15s ease;
+        }
+        .card-hover {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <!-- Logo & Brand -->
+                <div class="flex items-center">
+                    <a href="{% url 'users:user_dashboard' %}" class="flex items-center space-x-2.5">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center shadow-md shadow-indigo-200">
+                            <i class="fas fa-shield-halved text-white text-sm"></i>
+                        </div>
+                        <span class="text-xl font-bold tracking-tight text-gray-900">
+                            CyberShield <span class="text-indigo-600">Portal</span>
+                        </span>
+                    </a>
+                </div>
+
+                <!-- User Menu & Logout -->
+                <div class="flex items-center space-x-4">
+                    <a href="{% url 'users:profile' %}"
+                       class="flex items-center gap-3 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-full hover:bg-gray-100 transition-colors">
+                        <span class="text-sm font-medium text-gray-700">
+                            {{ request.user.first_name|default:request.user.username }}
+                        </span>
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                            {{ request.user.first_name|slice:":1"|upper }}{{ request.user.last_name|slice:":1"|upper }}
+                        </div>
+                    </a>
+
+                    <a href="{% url 'users:logout' %}"
+                       class="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors shadow-xs">
+                        <i class="fas fa-sign-out-alt text-gray-500"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Django Messages -->
+    {% if messages %}
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        {% for message in messages %}
+        <div class="alert {% if message.tags == 'error' %}bg-red-50 border-red-200 text-red-800{% elif message.tags == 'success' %}bg-green-50 border-green-200 text-green-800{% elif message.tags == 'warning' %}bg-yellow-50 border-yellow-200 text-yellow-800{% else %}bg-blue-50 border-blue-200 text-blue-800{% endif %} border px-4 py-3 rounded-xl relative mb-4 shadow-sm" role="alert">
+            <span class="block sm:inline">{{ message }}</span>
+            <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3" onclick="this.parentElement.remove()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Page Header -->
+        <header class="mb-8">
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900">
+                {% block page_title %}Overview{% endblock %}
+            </h1>
+            <p class="mt-2 text-gray-600">
+                {% block page_description %}Monitoring your digital perimeter{% endblock %}
+            </p>
+        </header>
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center">
+            <p class="text-gray-500 text-sm">
+                &copy; {% now "Y" %} CyberShield. All rights reserved.
+                <span class="mx-2">•</span>
+                <i class="fas fa-shield-halved text-indigo-500"></i> Secure Portal
+            </p>
+        </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

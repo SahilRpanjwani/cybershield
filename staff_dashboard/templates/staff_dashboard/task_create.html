@@ -1,0 +1,28 @@
+{% extends "staff_dashboard/base.html" %}
+
+{% block content %}
+
+<h2>Create Task</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Title:</label>
+    {{ form.title }}
+    <br><br>
+
+    <label>Description:</label>
+    {{ form.description }}
+    <br><br>
+
+    <label>Assign To:</label>
+    {{ form.assigned_to }}
+    <br><br>
+
+    <button type="submit">Create Task</button>
+</form>
+
+<br>
+<a href="{% url 'engagement_detail' engagement.id %}">Back</a>
+
+{% endblock %}

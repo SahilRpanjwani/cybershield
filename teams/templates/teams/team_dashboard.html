@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Dashboard | CyberShield</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 flex">
+
+    <!-- Sidebar (same as before) -->
+    <aside class="w-64 bg-gray-900 min-h-screen text-white hidden lg:flex flex-col">
+        <div class="p-6">
+            <h1 class="text-xl font-bold flex items-center">
+                <i class="fas fa-shield-virus mr-3 text-blue-500"></i>CyberShield
+            </h1>
+            <p class="text-xs text-gray-400 mt-1 uppercase tracking-widest">Operator Console</p>
+        </div>
+        <nav class="flex-1 px-4 space-y-2 mt-4">
+            <a href="{% url 'users:pentester_dashboard' %}" class="flex items-center p-3 hover:bg-gray-800 rounded-lg transition text-gray-300">
+                <i class="fas fa-th-large mr-3"></i> Dashboard
+            </a>
+            <a href="{% url 'teams:team_dashboard' %}" class="flex items-center p-3 bg-blue-600 rounded-lg transition text-white">
+                <i class="fas fa-users mr-3"></i> Team
+            </a>
+            <a href="{% url 'users:report_list' %}" class="flex items-center p-3 hover:bg-gray-800 rounded-lg transition text-gray-300">
+                <i class="fas fa-file-signature mr-3"></i> Reports
+            </a>
+
+        </nav>
+        <div class="p-4 border-t border-gray-800">
+            <a href="{% url 'users:logout' %}" class="flex items-center p-3 text-red-400 hover:bg-red-900/20 rounded-lg transition">
+                <i class="fas fa-sign-out-alt mr-3"></i> Logout
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 min-h-screen">
+        <header class="bg-white border-b border-gray-200 px-8 py-4 flex justify-between items-center sticky top-0 z-10">
+            <div class="flex items-center">
+                <h2 class="text-xl font-bold text-gray-800">Team Dashboard</h2>
+                <span class="ml-4 px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium">
+                    {{ request.user.profile.get_role_display }}
+                </span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="{% url 'users:profile' %}" class="flex items-center space-x-4 group">
+                    <div class="text-right">
+                        <p class="text-sm font-bold text-gray-900 leading-none group-hover:text-blue-700 transition">{{ request.user.get_full_name|default:request.user.username }}</p>
+                        <p class="text-xs text-gray-500 mt-1 italic">Authorized Personnel Only</p>
+                    </div>
+                    <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold ring-2 ring-transparent group-hover:ring-blue-300 transition">
+                        {{ request.user.username|slice:":1"|upper }}
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <div class="p-8 max-w-7xl mx-auto">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="mb-4 p-4 rounded-lg {% if message.tags == 'success' %}bg-green-50 text-green-700 border border-green-200{% else %}bg-red-50 text-red-700 border border-red-200{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% for data in teams_data %}
+            <div class="mb-10 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <!-- Team Header -->
+                <div class="px-6 py-5 border-b border-gray-200 bg-gray-50/50">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900">{{ data.team.name }}</h3>
+                            <p class="text-sm text-gray-500">{{ data.team.description }}</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700">
+                                {{ data.members|length }} member{{ data.members|length|pluralize }}
+                            </span>
+                            {% if data.is_lead %}
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-700 border border-yellow-200">
+                                    <i class="fas fa-crown mr-1"></i> Team Lead
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
+                    <!-- Left: Members List -->
+                    <div>
+                        <h4 class="text-md font-bold text-gray-900 mb-3 flex items-center">
+                            <i class="fas fa-user-friends mr-2 text-indigo-600"></i> Members
+                        </h4>
+                        <div class="space-y-2">
+                            {% for member in data.members %}
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
+                                    {{ member.user.username|slice:":1"|upper }}
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">{{ member.user.get_full_name|default:member.user.username }}</p>
+                                    <p class="text-xs text-gray-500">{{ member.user.profile.get_role_display }}</p>
+                                </div>
+                                {% if member.user == data.team.team_lead %}
+                                    <i class="fas fa-crown text-yellow-500 ml-auto" title="Team Lead"></i>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Middle & Right: Tasks and Lead Actions -->
+                    <div class="lg:col-span-2">
+                        <!-- Tasks List -->
+                        <h4 class="text-md font-bold text-gray-900 mb-3 flex items-center">
+                            <i class="fas fa-tasks mr-2 text-purple-600"></i> Team Tasks
+                        </h4>
+
+                        {% if data.tasks %}
+                        <div class="space-y-3 mb-6">
+                            {% for task in data.tasks %}
+                            <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <p class="font-semibold text-gray-900">
+                                                <a href="{% url 'teams:task_detail' task.id %}" class="hover:text-indigo-600 hover:underline">
+                                                    {{ task.title }}
+                                                </a>
+                                            </p>
+                                            <!-- Optional: Show "Auto-generated" badge if you want to distinguish -->
+                                            {% if not task.assigned_to and data.is_lead %}
+                                            <span class="text-[10px] px-2 py-0.5 bg-gray-200 text-gray-600 rounded-full">auto</span>
+                                            {% endif %}
+                                        </div>
+                                        <p class="text-sm text-gray-600 mt-1">{{ task.description|truncatechars:80 }}</p>
+                                        <div class="flex items-center gap-4 mt-2">
+                                            <span class="text-xs text-gray-500">
+                                                <i class="fas fa-building mr-1"></i> {{ task.engagement.request.company_name }}
+                                            </span>
+                                            <span class="text-xs text-gray-500">
+                                                <i class="fas fa-user mr-1"></i> {% if task.assigned_to %}{{ task.assigned_to.username }}{% else %}Unassigned{% endif %}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-1 text-[10px] font-bold uppercase rounded-full
+                                            {% if task.status == 'done' %}bg-green-100 text-green-700
+                                            {% elif task.status == 'in_progress' %}bg-yellow-100 text-yellow-700
+                                            {% else %}bg-gray-100 text-gray-600{% endif %}">
+                                            {{ task.get_status_display }}
+                                        </span>
+                                        <!-- Lead-only action buttons -->
+                                        {% if data.is_lead %}
+                                        <div class="flex items-center gap-1 ml-2">
+                                            <!-- Assign Form -->
+                                            <form method="POST" action="{% url 'teams:assign_task' task.id %}" class="inline-flex items-center">
+                                                {% csrf_token %}
+                                                <select name="assigned_to" class="text-xs border border-gray-300 rounded px-2 py-1 focus:ring-1 focus:ring-indigo-500">
+                                                    <option value="">-- Assign --</option>
+                                                    {% for member in data.members %}
+                                                        <option value="{{ member.user.id }}" {% if task.assigned_to == member.user %}selected{% endif %}>
+                                                            {{ member.user.username }}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                                <button type="submit" class="ml-1 text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded hover:bg-indigo-200 transition">
+                                                    <i class="fas fa-user-check"></i>
+                                                </button>
+                                            </form>
+
+                                            <!-- Delete Form -->
+                                            <form method="POST" action="{% url 'teams:delete_task' task.id %}" onsubmit="return confirm('Delete this task permanently?');">
+                                                {% csrf_token %}
+                                                <button type="submit" class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded hover:bg-red-200 transition">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p class="text-gray-400 text-center py-6 border border-dashed border-gray-200 rounded-lg">No tasks yet.</p>
+                        {% endif %}
+
+                        <!-- Lead Actions: Create Task Form -->
+                        {% if data.is_lead %}
+                        <div class="mt-6 border-t border-gray-200 pt-6">
+                            <h4 class="text-md font-bold text-gray-900 mb-4 flex items-center">
+                                <i class="fas fa-plus-circle mr-2 text-green-600"></i> Create New Task
+                            </h4>
+                            <form method="POST" action="{% url 'teams:team_task_create' data.team.id %}" class="space-y-4">
+                                {% csrf_token %}
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Task Title</label>
+                                    <input type="text" name="title" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                                    <textarea name="description" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Engagement</label>
+                                        <select name="engagement" required class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                                            <option value="">-- Select Engagement --</option>
+                                            {% for eng in data.engagements %}
+                                                <option value="{{ eng.id }}">{{ eng.request.company_name }} ({{ eng.get_status_display }})</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Assign To</label>
+                                        <select name="assigned_to" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                                            <option value="">-- Unassigned --</option>
+                                            {% for member in data.members %}
+                                                <option value="{{ member.user.id }}">{{ member.user.username }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                                    <select name="status" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                                        <option value="todo">To Do</option>
+                                        <option value="in_progress">In Progress</option>
+                                        <option value="done">Done</option>
+                                    </select>
+                                </div>
+                                <div class="flex justify-end">
+                                    <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition font-medium">
+                                        <i class="fas fa-plus mr-2"></i> Create Task
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
+                <i class="fas fa-users-slash text-gray-200 text-5xl mb-4"></i>
+                <p class="text-gray-500 text-lg">You are not a member of any team yet.</p>
+                <p class="text-gray-400 text-sm mt-2">Contact an administrator to be assigned to a team.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #1f2937;
+            line-height: 1.6;
+        }
+        .header {
+            background: #4f46e5;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .meta {
+            margin: 15px 0;
+            font-size: 12px;
+            color: #e0e7ff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            text-align: left;
+            padding: 8px 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        th {
+            background: #f9fafb;
+            color: #4b5563;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        h2 {
+            color: #4f46e5;
+            margin-top: 30px;
+            border-bottom: 2px solid #e0e7ff;
+            padding-bottom: 5px;
+        }
+        .footer {
+            margin-top: 50px;
+            font-size: 10px;
+            color: #9ca3af;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>CyberShield Security Assessment Report</h1>
+        <div class="meta">
+            Prepared for {{ report.engagement.request.company_name }}<br>
+            {{ report.created_at|date:"F j, Y" }}
+        </div>
+    </div>
+
+    <table>
+        <tr>
+            <th>Company</th>
+            <td>{{ report.engagement.request.company_name }}</td>
+        </tr>
+        <tr>
+            <th>Report Title</th>
+            <td>{{ report.title }}</td>
+        </tr>
+        <tr>
+            <th>Severity</th>
+            <td>{{ report.get_severity_display }}</td>
+        </tr>
+        <tr>
+            <th>Engagement Type</th>
+            <td>{{ report.engagement.request.get_request_type_display|default:report.engagement.request.request_type }}</td>
+        </tr>
+    </table>
+
+    <h2>Executive Summary</h2>
+    <p>{{ report.summary|default:"No summary provided."|linebreaksbr }}</p>
+
+    <h2>Key Findings</h2>
+    <div>{{ report.findings|default:"No findings listed."|safe }}</div>
+
+
+    <h2>NOVA AI Analysis</h2>
+    <p>{{ report.nova_analysis|default:"No automated analysis available."|linebreaksbr }}</p>
+
+    <h2>Analyst Notes</h2>
+    <p>{{ report.admin_notes|default:"No additional notes."|linebreaksbr }}</p>
+
+    <div class="footer">
+        <p>Confidential – Prepared by CyberShield Security Team</p>
+        <p>This document contains proprietary security information. Do not distribute without authorization.</p>
+    </div>
+</body>
+</html>

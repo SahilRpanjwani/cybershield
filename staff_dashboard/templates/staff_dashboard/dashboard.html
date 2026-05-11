@@ -1,0 +1,213 @@
+{% extends 'staff_dashboard/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Admin Dashboard{% endblock %}
+{% block page_description %}Overview of your CyberShield system{% endblock %}
+
+{% block content %}
+
+<!-- Welcome Banner -->
+<div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-50 via-white to-purple-50 border border-indigo-100 p-6 md:p-8 mb-8 shadow-sm">
+  <div class="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(99,102,241,0.08),transparent_60%)] pointer-events-none"></div>
+  <div class="relative z-10">
+    <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900 mb-2">
+      Welcome back, <span class="text-indigo-600">{{ user.username }}</span>
+    </h2>
+    <p class="text-gray-600 text-base md:text-lg max-w-xl">
+      You have {{ total_users }} registered users and {{ total_teams }} active teams.
+    </p>
+  </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+  <!-- Total Users -->
+  <div class="card-hover bg-white border border-gray-200 rounded-2xl p-5 shadow-xs">
+    <div class="w-11 h-11 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-600 mb-4">
+      <i class="fas fa-users text-lg"></i>
+    </div>
+    <div class="text-3xl font-extrabold text-gray-900 tracking-tight">{{ total_users }}</div>
+    <div class="text-sm font-medium text-gray-500 mt-1">Total Users</div>
+  </div>
+
+  <!-- Active Teams -->
+  <div class="card-hover bg-white border border-gray-200 rounded-2xl p-5 shadow-xs">
+    <div class="w-11 h-11 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-center text-purple-600 mb-4">
+      <i class="fas fa-users-cog text-lg"></i>
+    </div>
+    <div class="text-3xl font-extrabold text-gray-900 tracking-tight">{{ total_teams }}</div>
+    <div class="text-sm font-medium text-gray-500 mt-1">Active Teams</div>
+  </div>
+
+  <!-- Analysts -->
+  <div class="card-hover bg-white border border-gray-200 rounded-2xl p-5 shadow-xs">
+    <div class="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 mb-4">
+      <i class="fas fa-user-shield text-lg"></i>
+    </div>
+    <div class="text-3xl font-extrabold text-gray-900 tracking-tight">{{ analyst_count }}</div>
+    <div class="text-sm font-medium text-gray-500 mt-1">Analysts</div>
+  </div>
+
+  <!-- Pentesters -->
+  <div class="card-hover bg-white border border-gray-200 rounded-2xl p-5 shadow-xs">
+    <div class="w-11 h-11 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 mb-4">
+      <i class="fas fa-user-secret text-lg"></i>
+    </div>
+    <div class="text-3xl font-extrabold text-gray-900 tracking-tight">{{ pentester_count }}</div>
+    <div class="text-sm font-medium text-gray-500 mt-1">Pentesters</div>
+  </div>
+</div>
+
+<!-- Two Column Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+  <!-- Users by Role (takes 2 columns) -->
+  <div class="lg:col-span-2 bg-white border border-gray-200 rounded-2xl p-6 shadow-xs">
+    <h3 class="text-lg font-bold text-gray-900 mb-4">Users by Role</h3>
+    <div class="space-y-4">
+      {% for stat in role_stats %}
+      <div class="flex items-center gap-3">
+        <div class="w-32 shrink-0">
+          <span class="text-sm font-medium text-gray-700">
+            {% if stat.role == 'admin' %}Administrator
+            {% elif stat.role == 'client' %}Client
+            {% elif stat.role == 'network_analyst' %}Network Analyst
+            {% elif stat.role == 'web_pentester' %}Web Pentester
+            {% elif stat.role == 'mobile_pentester' %}Mobile Pentester
+            {% elif stat.role == 'soc_analyst' %}SOC Analyst
+            {% else %}{{ stat.role|title }}{% endif %}
+          </span>
+        </div>
+        <div class="flex-1">
+          <div class="bg-gray-200 rounded-full h-3 overflow-hidden">
+            {% widthratio stat.count total_users 100 as percentage %}
+            <div class="bg-indigo-600 h-3 rounded-full transition-all duration-500" style="width: {{ percentage }}%"></div>
+          </div>
+        </div>
+        <span class="text-sm font-bold text-gray-900 w-10 text-right">{{ stat.count }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl p-6 text-white shadow-lg">
+    <h3 class="text-lg font-bold mb-4">Quick Actions</h3>
+    <div class="space-y-3">
+      <a href="{% url 'team_create' %}" class="flex items-center gap-3 p-3 bg-white/10 hover:bg-white/20 rounded-xl transition">
+        <i class="fas fa-plus-circle text-xl"></i>
+        <span class="font-medium">Create New Team</span>
+      </a>
+      <a href="{% url 'add_pentester' %}" class="flex items-center gap-3 p-3 bg-white/10 hover:bg-white/20 rounded-xl transition">
+        <i class="fas fa-user-secret text-xl"></i>
+        <span class="font-medium">Add Pentester</span>
+      </a>
+      <a href="{% url 'user_list' %}" class="flex items-center gap-3 p-3 bg-white/10 hover:bg-white/20 rounded-xl transition">
+        <i class="fas fa-user-plus text-xl"></i>
+        <span class="font-medium">Manage Users</span>
+      </a>
+      <a href="{% url 'team_list' %}" class="flex items-center gap-3 p-3 bg-white/10 hover:bg-white/20 rounded-xl transition">
+        <i class="fas fa-tasks text-xl"></i>
+        <span class="font-medium">View All Teams</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Teams & Recent Users (two columns) -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+  <!-- Recent Teams -->
+  <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-bold text-gray-900">Recent Teams</h3>
+      <a href="{% url 'team_list' %}" class="text-sm font-semibold text-indigo-600 hover:text-indigo-700 flex items-center gap-1">
+        View All <i class="fas fa-arrow-right text-xs"></i>
+      </a>
+    </div>
+    <div class="space-y-3">
+      {% for team in recent_teams %}
+      <a href="{% url 'team_detail' team.id %}" class="block p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="font-semibold text-gray-900">{{ team.name }}</p>
+            <p class="text-sm text-gray-600 mt-0.5">
+              Lead: {% if team.team_lead %}{{ team.team_lead.username }}{% else %}Not assigned{% endif %}
+            </p>
+          </div>
+          <span class="text-xs text-gray-500">{{ team.created_at|date:"M d, Y" }}</span>
+        </div>
+      </a>
+      {% empty %}
+      <p class="text-gray-500 text-center py-6">No teams created yet</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Recent Users -->
+  <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-bold text-gray-900">Recent Users</h3>
+      <a href="{% url 'user_list' %}" class="text-sm font-semibold text-indigo-600 hover:text-indigo-700 flex items-center gap-1">
+        View All <i class="fas fa-arrow-right text-xs"></i>
+      </a>
+    </div>
+    <div class="space-y-3">
+      {% for usr in recent_users %}
+      <a href="{% url 'user_detail' usr.id %}" class="block p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="font-semibold text-gray-900">{{ usr.username }}</p>
+            <p class="text-sm text-gray-600 mt-0.5">
+              {% if usr.profile.role == 'admin' %}Administrator
+              {% elif usr.profile.role == 'client' %}Client
+              {% elif usr.profile.role == 'network_analyst' %}Network Analyst
+              {% elif usr.profile.role == 'web_pentester' %}Web Pentester
+              {% elif usr.profile.role == 'mobile_pentester' %}Mobile Pentester
+              {% elif usr.profile.role == 'soc_analyst' %}SOC Analyst
+              {% else %}{{ usr.profile.role|title }}{% endif %}
+            </p>
+          </div>
+          <span class="text-xs text-gray-500">{{ usr.date_joined|date:"M d, Y" }}</span>
+        </div>
+      </a>
+      {% empty %}
+      <p class="text-gray-500 text-center py-6">No users yet</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<!-- Recent Pentest Requests -->
+<div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs">
+  <div class="flex items-center justify-between mb-4">
+    <h3 class="text-lg font-bold text-gray-900">Recent Pentest Requests</h3>
+    <a href="{% url 'request_list' %}" class="text-sm font-semibold text-indigo-600 hover:text-indigo-700 flex items-center gap-1">
+      View All <i class="fas fa-arrow-right text-xs"></i>
+    </a>
+  </div>
+  <div class="space-y-3">
+    {% for req in recent_requests %}
+    <a href="{% url 'request_detail' req.id %}" class="block p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="font-semibold text-gray-900">{{ req.company_name }}</p>
+          <p class="text-sm text-gray-600 mt-0.5">Client: {{ req.client.username }} · {{ req.get_request_type_display }}</p>
+        </div>
+        <div class="text-right">
+          <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wide
+            {% if req.status == 'pending' %}bg-amber-50 text-amber-700 border border-amber-200
+            {% elif req.status == 'approved' %}bg-emerald-50 text-emerald-700 border border-emerald-200
+            {% elif req.status == 'rejected' %}bg-red-50 text-red-700 border border-red-200
+            {% else %}bg-gray-50 text-gray-600 border border-gray-200{% endif %}">
+            {{ req.get_status_display }}
+          </span>
+          <p class="text-xs text-gray-500 mt-1">{{ req.created_at|date:"M d, Y" }}</p>
+        </div>
+      </div>
+    </a>
+    {% empty %}
+    <p class="text-gray-500 text-center py-6">No requests yet</p>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

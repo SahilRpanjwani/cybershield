@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us | CyberShield</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+
+  <!-- Navigation (same as homepage) -->
+  <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        <a href="{% url 'users:home' %}" class="flex items-center space-x-2">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center shadow-md shadow-indigo-200">
+            <i class="fas fa-shield-halved text-white text-sm"></i>
+          </div>
+          <span class="text-2xl font-bold tracking-tight text-gray-900">
+            Cyber<span class="text-indigo-600">Shield</span>
+          </span>
+        </a>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="{% url 'users:home' %}#platform" class="text-gray-600 hover:text-indigo-600 font-medium text-sm transition">Platform</a>
+          <a href="{% url 'users:home' %}#solutions" class="text-gray-600 hover:text-indigo-600 font-medium text-sm transition">Solutions</a>
+          <a href="{% url 'users:home' %}#features" class="text-gray-600 hover:text-indigo-600 font-medium text-sm transition">Features</a>
+          <a href="{% url 'users:login' %}" class="text-gray-600 hover:text-indigo-600 font-medium text-sm transition">Login</a>
+          <a href="{% url 'users:register' %}" class="inline-flex items-center px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-sm transition">
+            Get Started <i class="fas fa-arrow-right ml-2 text-xs"></i>
+          </a>
+        </div>
+        <div class="md:hidden">
+          <a href="{% url 'users:register' %}" class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-semibold">Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-6 py-16 lg:py-20">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 mb-4">Get in touch</h1>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">We're here to help with any questions about our platform, pricing, or security.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+      <!-- Contact Cards -->
+      <div class="bg-gray-50 rounded-2xl p-6 border border-gray-200 text-center">
+        <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl mx-auto mb-4">
+          <i class="fas fa-headset"></i>
+        </div>
+        <h3 class="font-bold text-lg mb-1">Sales</h3>
+        <p class="text-gray-600 text-sm mb-3">Interested in CyberShield for your organization?</p>
+        <a href="mailto:sales@cybershield.example" class="text-indigo-600 font-medium hover:underline">sales@cybershield.example</a>
+        <p class="text-xs text-gray-400 mt-2">Response within 4 hours</p>
+      </div>
+
+      <div class="bg-gray-50 rounded-2xl p-6 border border-gray-200 text-center">
+        <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-xl mx-auto mb-4">
+          <i class="fas fa-life-ring"></i>
+        </div>
+        <h3 class="font-bold text-lg mb-1">Support</h3>
+        <p class="text-gray-600 text-sm mb-3">Need help with your account or a scan?</p>
+        <a href="mailto:support@cybershield.example" class="text-indigo-600 font-medium hover:underline">support@cybershield.example</a>
+        <p class="text-xs text-gray-400 mt-2">24/7 for enterprise customers</p>
+      </div>
+
+      <div class="bg-gray-50 rounded-2xl p-6 border border-gray-200 text-center">
+        <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl mx-auto mb-4">
+          <i class="fas fa-shield-halved"></i>
+        </div>
+        <h3 class="font-bold text-lg mb-1">Security</h3>
+        <p class="text-gray-600 text-sm mb-3">Report a vulnerability or security concern.</p>
+        <a href="mailto:security@cybershield.example" class="text-indigo-600 font-medium hover:underline">security@cybershield.example</a>
+        <p class="text-xs text-gray-400 mt-2">PGP key available on request</p>
+      </div>
+    </div>
+
+    <!-- Contact Form (Placeholder - can be made functional later) -->
+    <div class="mt-16 max-w-2xl mx-auto">
+      <div class="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
+        <h3 class="text-xl font-bold text-gray-900 mb-4 text-center">Send us a message</h3>
+        <form>
+          <div class="grid sm:grid-cols-2 gap-4 mb-4">
+            <input type="text" placeholder="Your name" class="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <input type="email" placeholder="Email address" class="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+          <input type="text" placeholder="Subject" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4">
+          <textarea rows="4" placeholder="How can we help?" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4"></textarea>
+          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition">Send Message</button>
+        </form>
+        <p class="text-xs text-gray-500 text-center mt-4">We'll get back to you within 1 business day.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-gray-200 py-12">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+        <a href="{% url 'users:home' %}" class="flex items-center space-x-2">
+          <i class="fas fa-shield-halved text-indigo-600 text-xl"></i>
+          <span class="font-bold text-gray-900 text-xl">CyberShield</span>
+        </a>
+        <div class="flex gap-8 text-sm text-gray-500">
+          <a href="{% url 'users:privacy' %}" class="hover:text-indigo-600">Privacy</a>
+          <a href="{% url 'users:security' %}" class="hover:text-indigo-600">Security</a>
+          <a href="{% url 'users:blog' %}" class="hover:text-indigo-600">Blog / Resources</a>
+          <a href="{% url 'users:contact' %}" class="hover:text-indigo-600">Contact</a>
+        </div>
+        <p class="text-sm text-gray-400">© 2026 CyberShield Inc. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
