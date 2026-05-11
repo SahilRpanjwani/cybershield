@@ -163,42 +163,6 @@
 },
 {
   "model": "auth.user",
-  "pk": 15,
-  "fields": {
-    "password": "pbkdf2_sha256$1200000$qZgwrubPyOMznDXxnP8G8D$/UEozF1Xz3/itvqE07nzzmYInFCl4yKInm0lyYGQEoc=",
-    "last_login": null,
-    "is_superuser": false,
-    "username": "Mahir ",
-    "first_name": "Mahir",
-    "last_name": "Khalani",
-    "email": "mahirljku@gmail.com",
-    "is_staff": true,
-    "is_active": true,
-    "date_joined": "2026-02-03T10:19:23.378Z",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "auth.user",
-  "pk": 16,
-  "fields": {
-    "password": "pbkdf2_sha256$1200000$5O1lrtYlJ3tnmMMhL1VQFN$lAFgcxREFruIHvFoQsiEad74Nuo0XU/1mej84fV2GH4=",
-    "last_login": null,
-    "is_superuser": false,
-    "username": "amit",
-    "first_name": "amit",
-    "last_name": "senjaliya",
-    "email": "amitlj@gmail.com",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2026-02-03T10:33:19.367Z",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "auth.user",
   "pk": 19,
   "fields": {
     "password": "pbkdf2_sha256$1200000$zjIMd3ptLUlwOdDXzLuUEk$9tRaObeOGBbq+Ecc1UFZq3ffEa0Z63A4Db+Z6QxFRmo=",
@@ -233,42 +197,7 @@
     "user_permissions": []
   }
 },
-{
-  "model": "auth.user",
-  "pk": 22,
-  "fields": {
-    "password": "pbkdf2_sha256$1200000$1hBJ7krpYIhT5SXyyZIhY7$u9/SMB2K4CQHWswdERGhAymrXH2rrLL8MYeS53BO8gQ=",
-    "last_login": "2026-04-20T07:31:53.866Z",
-    "is_superuser": false,
-    "username": "nicknamesrp@gmail.com",
-    "first_name": "Sahil",
-    "last_name": "Panjwani",
-    "email": "nicknamesrp@gmail.com",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2026-03-24T11:23:58.455Z",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "auth.user",
-  "pk": 23,
-  "fields": {
-    "password": "pbkdf2_sha256$1200000$nURUdo21dZ4vSbGyBSEN07$jocRZtglvJzU3iGa7vHaKiwFyk4bWmAaMmtn0ljPyAA=",
-    "last_login": "2026-04-07T10:08:21.669Z",
-    "is_superuser": false,
-    "username": "amitsenjaliya043@gmail.com",
-    "first_name": "Amit",
-    "last_name": "Senjaliya",
-    "email": "amitsenjaliya043@gmail.com",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2026-04-07T10:07:56.440Z",
-    "groups": [],
-    "user_permissions": []
-  }
-},
+
 {
   "model": "auth.user",
   "pk": 24,
